@@ -1,0 +1,561 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: XRManualLeft
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: fac88dfde15e6274a85fe2f1b00c7821,
+      type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerPress.m_UseReference
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerPress.m_Action.m_Name
+    value: Trigger Press
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerPress.m_Action.m_Type
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerPress.m_Action.m_ExpectedControlType
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerPress.m_Action.m_Id
+    value: c4dae8c6-bd41-4510-b4b3-6c7ea5f79f15
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerPress.m_Action.m_Processors
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerPress.m_Action.m_Interactions
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerPress.m_Action.m_SingletonActionBindings.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerPress.m_Action.m_Flags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerPress.m_Reference
+    value: 
+    objectReference: {fileID: -5605038971935497574, guid: 798da7b79d39a8d4b935971161b17dd8,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerValue.m_UseReference
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerValue.m_Action.m_Name
+    value: Trigger Value
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerValue.m_Action.m_Type
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerValue.m_Action.m_ExpectedControlType
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerValue.m_Action.m_Id
+    value: 23676266-757e-4f61-b832-ea798680e583
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerValue.m_Action.m_Processors
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerValue.m_Action.m_Interactions
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerValue.m_Action.m_SingletonActionBindings.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerValue.m_Action.m_Flags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerValue.m_Reference
+    value: 
+    objectReference: {fileID: -2990820866844159641, guid: 798da7b79d39a8d4b935971161b17dd8,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerTouch.m_UseReference
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerTouch.m_Action.m_Name
+    value: Trigger Touch
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerTouch.m_Action.m_Type
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerTouch.m_Action.m_ExpectedControlType
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerTouch.m_Action.m_Id
+    value: 627f150a-386d-4b43-a13b-9f3ff255def2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerTouch.m_Action.m_Processors
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerTouch.m_Action.m_Interactions
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerTouch.m_Action.m_SingletonActionBindings.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerTouch.m_Action.m_Flags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TriggerTouch.m_Reference
+    value: 
+    objectReference: {fileID: 697131755363476038, guid: 798da7b79d39a8d4b935971161b17dd8,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_GripPress.m_UseReference
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_GripPress.m_Action.m_Name
+    value: Grip Press
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_GripPress.m_Action.m_Type
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_GripPress.m_Action.m_ExpectedControlType
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_GripPress.m_Action.m_Id
+    value: c9820396-2de6-4e55-bfb6-ff8d856a5c59
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_GripPress.m_Action.m_Processors
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_GripPress.m_Action.m_Interactions
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_GripPress.m_Action.m_SingletonActionBindings.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_GripPress.m_Action.m_Flags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_GripPress.m_Reference
+    value: 
+    objectReference: {fileID: 1623578767586052118, guid: 798da7b79d39a8d4b935971161b17dd8,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_GripValue.m_UseReference
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_GripValue.m_Action.m_Name
+    value: Grip Value
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_GripValue.m_Action.m_Type
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_GripValue.m_Action.m_ExpectedControlType
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_GripValue.m_Action.m_Id
+    value: fd79e95a-ade3-4d2b-ae43-348b1466309a
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_GripValue.m_Action.m_Processors
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_GripValue.m_Action.m_Interactions
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_GripValue.m_Action.m_SingletonActionBindings.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_GripValue.m_Action.m_Flags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_GripValue.m_Reference
+    value: 
+    objectReference: {fileID: 2226252861032758567, guid: 798da7b79d39a8d4b935971161b17dd8,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_PrimaryButtonTouch.m_UseReference
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_PrimaryButtonTouch.m_Action.m_Name
+    value: Primary Button Touch
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_PrimaryButtonTouch.m_Action.m_Type
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_PrimaryButtonTouch.m_Action.m_ExpectedControlType
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_PrimaryButtonTouch.m_Action.m_Id
+    value: 1580aa91-dc61-4418-b0e6-b7126d43d887
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_PrimaryButtonTouch.m_Action.m_Processors
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_PrimaryButtonTouch.m_Action.m_Interactions
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_PrimaryButtonTouch.m_Action.m_SingletonActionBindings.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_PrimaryButtonTouch.m_Action.m_Flags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_PrimaryButtonTouch.m_Reference
+    value: 
+    objectReference: {fileID: 7455126691444153206, guid: 798da7b79d39a8d4b935971161b17dd8,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_PrimaryButton.m_UseReference
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_PrimaryButton.m_Action.m_Name
+    value: Primary Button
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_PrimaryButton.m_Action.m_Type
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_PrimaryButton.m_Action.m_ExpectedControlType
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_PrimaryButton.m_Action.m_Id
+    value: 0dfbff44-2f5d-424a-b295-4ebbd08c43ee
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_PrimaryButton.m_Action.m_Processors
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_PrimaryButton.m_Action.m_Interactions
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_PrimaryButton.m_Action.m_SingletonActionBindings.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_PrimaryButton.m_Action.m_Flags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_PrimaryButton.m_Reference
+    value: 
+    objectReference: {fileID: -7232988028472521518, guid: 798da7b79d39a8d4b935971161b17dd8,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_SecondaryButtonTouch.m_UseReference
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SecondaryButtonTouch.m_Action.m_Name
+    value: Secondary Button Touch
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SecondaryButtonTouch.m_Action.m_Type
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SecondaryButtonTouch.m_Action.m_ExpectedControlType
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SecondaryButtonTouch.m_Action.m_Id
+    value: 1674558c-4d43-4914-b176-2912d7c8ee0c
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SecondaryButtonTouch.m_Action.m_Processors
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SecondaryButtonTouch.m_Action.m_Interactions
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SecondaryButtonTouch.m_Action.m_SingletonActionBindings.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SecondaryButtonTouch.m_Action.m_Flags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SecondaryButtonTouch.m_Reference
+    value: 
+    objectReference: {fileID: -1303825353578230072, guid: 798da7b79d39a8d4b935971161b17dd8,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_SecondaryButton.m_UseReference
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SecondaryButton.m_Action.m_Name
+    value: Secondary Button
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SecondaryButton.m_Action.m_Type
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SecondaryButton.m_Action.m_ExpectedControlType
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SecondaryButton.m_Action.m_Id
+    value: 35da977b-c0da-4dd4-b33a-a587a5073965
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SecondaryButton.m_Action.m_Processors
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SecondaryButton.m_Action.m_Interactions
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SecondaryButton.m_Action.m_SingletonActionBindings.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SecondaryButton.m_Action.m_Flags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SecondaryButton.m_Reference
+    value: 
+    objectReference: {fileID: -4235491312428072909, guid: 798da7b79d39a8d4b935971161b17dd8,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStickTouch.m_UseReference
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStickTouch.m_Action.m_Name
+    value: Thumb Stick Touch
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStickTouch.m_Action.m_Type
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStickTouch.m_Action.m_ExpectedControlType
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStickTouch.m_Action.m_Id
+    value: d46adf82-af86-474a-9663-4f37f3772151
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStickTouch.m_Action.m_Processors
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStickTouch.m_Action.m_Interactions
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStickTouch.m_Action.m_SingletonActionBindings.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStickTouch.m_Action.m_Flags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStickTouch.m_Reference
+    value: 
+    objectReference: {fileID: -4233058738594772397, guid: 798da7b79d39a8d4b935971161b17dd8,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStickPressed.m_UseReference
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStickPressed.m_Action.m_Name
+    value: Thumb Stick Pressed
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStickPressed.m_Action.m_Type
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStickPressed.m_Action.m_ExpectedControlType
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStickPressed.m_Action.m_Id
+    value: 11a376d8-c889-47cb-966b-13a8b691e919
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStickPressed.m_Action.m_Processors
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStickPressed.m_Action.m_Interactions
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStickPressed.m_Action.m_SingletonActionBindings.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStickPressed.m_Action.m_Flags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStickPressed.m_Reference
+    value: 
+    objectReference: {fileID: 7915040674097311154, guid: 798da7b79d39a8d4b935971161b17dd8,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStick.m_UseReference
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStick.m_Action.m_Name
+    value: Thumb Stick
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStick.m_Action.m_Type
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStick.m_Action.m_ExpectedControlType
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStick.m_Action.m_Id
+    value: fa533a5a-1c61-45b5-9bc0-84f72b693802
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStick.m_Action.m_Processors
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStick.m_Action.m_Interactions
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStick.m_Action.m_SingletonActionBindings.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStick.m_Action.m_Flags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbStick.m_Reference
+    value: 
+    objectReference: {fileID: -778895312227644673, guid: 798da7b79d39a8d4b935971161b17dd8,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbTouch.m_UseReference
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbTouch.m_Action.m_Name
+    value: Thumb Touch
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbTouch.m_Action.m_Type
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbTouch.m_Action.m_ExpectedControlType
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbTouch.m_Action.m_Id
+    value: 213926c6-f6ae-4b3d-89e0-54d0436ea940
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbTouch.m_Action.m_Processors
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbTouch.m_Action.m_Interactions
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbTouch.m_Action.m_SingletonActionBindings.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbTouch.m_Action.m_Flags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ThumbTouch.m_Reference
+    value: 
+    objectReference: {fileID: 1849014791328291837, guid: 798da7b79d39a8d4b935971161b17dd8,
+      type: 3}
+  m_ExcludedProperties: []
