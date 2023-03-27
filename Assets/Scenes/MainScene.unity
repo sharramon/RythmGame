@@ -3011,29 +3011,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 605663814}
-  - component: {fileID: 605663813}
+  - component: {fileID: 605663815}
   m_Layer: 0
-  m_Name: BellManager
+  m_Name: SkillManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &605663813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 605663812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 611ca2022560d4449abae2c8b3d6bb46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _trackedCenterTransform: {fileID: 1771766077}
-  _bellCenterObject: {fileID: 1209606434}
-  _bellDistance: 1
 --- !u!4 &605663814
 Transform:
   m_ObjectHideFlags: 0
@@ -3049,6 +3034,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &605663815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605663812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 782e54928b1ab874482eb46527da95a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _skillScriptable: {fileID: 11400000, guid: f7ade8ad1a46cb348bcd0b0cd7a23418, type: 2}
+  _decoratorSkillNumber: 1
+  _skillOnRight: 
+  _skillOnLeft: 
+  _decoratorOnRight: []
+  _decoratorOnLeft: []
 --- !u!1 &609708770
 GameObject:
   m_ObjectHideFlags: 0
@@ -3269,6 +3272,7 @@ GameObject:
   - component: {fileID: 861400532}
   - component: {fileID: 861400534}
   - component: {fileID: 861400535}
+  - component: {fileID: 861400536}
   m_Layer: 0
   m_Name: MusicManager
   m_TagString: Untagged
@@ -3417,6 +3421,26 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &861400536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 861400531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 611ca2022560d4449abae2c8b3d6bb46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _trackedCenterTransform: {fileID: 1771766077}
+  _bellCenterObject: {fileID: 1209606434}
+  _bellDistance: 1
+  _noteArraySize: 0
+  _rightStoredAbility: 
+  _rightStoredDecortator: 
+  _leftStoredAbility: 
+  _leftStoredDecorator: 
 --- !u!1 &861558705
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,3 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86c85805b7c120747bdac6a9710556c3, type: 3}
   m_Name: SkillList
   m_EditorClassIdentifier: 
+  _skillInfoList:
+  - _skillName: 
+    _skillPrefab: {fileID: 0}
+    _skillInput: 000000000000000000000000
+  _decoratorInfoList:
+  - _skillName: PowerUp
+    _skillPrefab: {fileID: 0}
+    _skillInput: 0300000002000000
+  - _skillName: Multiply
+    _skillPrefab: {fileID: 0}
+    _skillInput: 0300000001000000

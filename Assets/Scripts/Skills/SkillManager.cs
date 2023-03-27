@@ -6,8 +6,12 @@ namespace RythmGame
 {
     public class SkillManager : Singleton<SkillManager>
     {
-        [SerializeField] SkillScriptable _skillList;
+        [SerializeField] SkillScriptable _skillScriptable;
         [SerializeField] int _decoratorSkillNumber; //The number of decorators a skill is allowed to have
+
+        //made a dictionary of all the skills and decorators
+        Dictionary<string, SkillInfo> _skillDictionary = new Dictionary<string, SkillInfo>();
+        Dictionary<string, SkillInfo> _decoratorDictionary = new Dictionary<string, SkillInfo>();
 
         //skills that are saved on each hand
         [HideInInspector] public string _skillOnRight;
@@ -21,8 +25,12 @@ namespace RythmGame
         {
             //check if decorators exist in ISkill
             List<string> decoratorList = ISkill.GetDecoratorList();
-            List<string> scriptableDecoratorList = _skillList.GetDecoratorList();
+            List<string> scriptableDecoratorList = _skillScriptable.GetDecoratorNameList();
             CheckIfDecoratorExists(decoratorList, scriptableDecoratorList);
+
+            //create the dictionaries for the skills and decorators
+            _skillDictionary = GetSkillDictionary(_skillScriptable.GetSkillList());
+            _decoratorDictionary = GetSkillDictionary(_skillScriptable.GetDecoratorList());
 
             //initialize the decorator string arrays
             _decoratorOnRight = new string[_decoratorSkillNumber];
@@ -43,6 +51,19 @@ namespace RythmGame
                     Debug.LogError($"ISkill does not contain the decorator {scriptableDecoratorList[i]}. Consider adding");
                 }
             }
+        }
+
+        private Dictionary<string, SkillInfo> GetSkillDictionary(List<SkillInfo> skillInfoList)
+        {
+            Dictionary<string, SkillInfo> skillDictionary = new Dictionary<string, SkillInfo>();
+
+            for(int i = 0; i < skillInfoList.Count; i++)
+            {
+                string key = skillInfoList[i].GetSkillKey();
+                skillDictionary.Add(key, skillInfoList[i]);
+            }
+
+            return skillDictionary;
         }
     }
 }

@@ -8,10 +8,13 @@ namespace RythmGame
     [CreateAssetMenu(menuName = "SkillList")]
     public class SkillScriptable : ScriptableObject
     {
-        public List<SkillInfo> _skillInfoList = new List<SkillInfo>();
-        public List<SkillInfo> _decoratorInfoList = new List<SkillInfo>();
+        [SerializeField] private List<SkillInfo> _skillInfoList = new List<SkillInfo>();
+        [SerializeField] private List<SkillInfo> _decoratorInfoList = new List<SkillInfo>();
 
-        public List<string> GetSkillList()
+        /// <summary>
+        /// Returns the string names of the skills
+        /// </summary>
+        public List<string> GetSkillNameList()
         {
             List<string> skillList = new List<string>();
 
@@ -22,8 +25,15 @@ namespace RythmGame
 
             return skillList;
         }
-
-        public List<string> GetDecoratorList()
+        /// <summary> Retuns the SkillInfo list of skills </summary>
+        public List<SkillInfo> GetSkillList()
+        {
+            return _skillInfoList;
+        }
+        /// <summary>
+        /// Returns the string names of the decorators
+        /// </summary>
+        public List<string> GetDecoratorNameList()
         {
             List<string> decoratorList = new List<string>();
 
@@ -33,6 +43,11 @@ namespace RythmGame
             }
 
             return decoratorList;
+        }
+        /// <summary> Returns the SkillInfo list for decorators </summary>
+        public List<SkillInfo> GetDecoratorList()
+        {
+            return _decoratorInfoList;
         }
     }
 
@@ -56,6 +71,18 @@ namespace RythmGame
         public int[] GetSkillInput()
         {
             return _skillInput;
+        }
+
+        public string GetSkillKey()
+        {
+            string key ="";
+
+            for(int i = 0; i < _skillInput.Length; i++)
+            {
+                key += $"{_skillInput[i]}_";
+            }
+
+            return key;
         }
     }
 }
