@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace RythmGame
 {
-    public class LightSkill : ISkill
+    public class SpeedSkill : ISkill
     {
-        public override string _name { get { return "Light"; } }
+        public override string _name { get { return "Speed"; } }
 
-        protected override void MultiplyDecorator()
+        protected override void PowerUpDecorator()
         {
             //some power up script
         }

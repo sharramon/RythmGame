@@ -30,5 +30,25 @@ namespace RythmGame
                 _abilitiesByName.Add(tempSkill.name, type);
             }
         }
+
+        public static ISkill GetSkill(string skillName)
+        {
+            InitializeFactory();
+
+            if(_abilitiesByName.ContainsKey(skillName))
+            {
+                Type type = _abilitiesByName[skillName];
+                var skill = Activator.CreateInstance(type) as ISkill;
+                return skill;
+            }
+
+            return null;
+        }
+
+        internal static IEnumerable<string> GetSkillNames()
+        {
+            InitializeFactory();
+            return _abilitiesByName.Keys;
+        }
     }
 }
