@@ -35,6 +35,9 @@ namespace RythmGame
             //initialize the decorator string arrays
             _decoratorOnRight = new string[_decoratorSkillNumber];
             _decoratorOnLeft = new string[_decoratorSkillNumber];
+
+            //ability factory test
+            SkillFactoryTest();
         }
 
         void Update()
@@ -57,13 +60,23 @@ namespace RythmGame
         {
             Dictionary<string, SkillInfo> skillDictionary = new Dictionary<string, SkillInfo>();
 
-            for(int i = 0; i < skillInfoList.Count; i++)
+            for (int i = 0; i < skillInfoList.Count; i++)
             {
                 string key = skillInfoList[i].GetSkillKey();
                 skillDictionary.Add(key, skillInfoList[i]);
             }
 
             return skillDictionary;
+        }
+
+        private void SkillFactoryTest()
+        {
+            Debug.Log("Factory test started");
+            string[] keyArray = SkillFactory.GetSkillNames();
+            foreach(string key in keyArray)
+            {
+                Debug.Log($"Skill name is {key}");
+            }
         }
     }
 }

@@ -17,6 +17,8 @@ namespace RythmGame
             if (_isInitialized)
                 return;
 
+            Debug.Log("Factory being initialized");
+
             //gets all the non-abstract versions of ISkill
             var abilityTypes = Assembly.GetAssembly(typeof(ISkill)).GetTypes().
                 Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(ISkill)));
@@ -27,7 +29,8 @@ namespace RythmGame
             foreach(var type in abilityTypes)
             {
                 var tempSkill = Activator.CreateInstance(type) as ISkill;
-                _abilitiesByName.Add(tempSkill.name, type);
+                _abilitiesByName.Add(tempSkill._name, type);
+                Debug.Log(type.FullName);
             }
         }
 
@@ -45,10 +48,12 @@ namespace RythmGame
             return null;
         }
 
-        internal static IEnumerable<string> GetSkillNames()
+        internal static string[] GetSkillNames()
         {
+            Debug.Log("Get skill names started");
             InitializeFactory();
-            return _abilitiesByName.Keys;
+            string[] keyArray = _abilitiesByName.Keys.ToArray();
+            return keyArray;
         }
     }
 }

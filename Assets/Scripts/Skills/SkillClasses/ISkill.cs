@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace RythmGame
 {
-    public abstract class ISkill : MonoBehaviour
+    public abstract class ISkill
     {
         private static List<string> _decoratorList = new List<string> {
             "PowerUp",
@@ -15,7 +15,8 @@ namespace RythmGame
         protected Dictionary<string, MethodInfo> _methodDictionary = new Dictionary<string, MethodInfo>();
         public abstract string _name { get; } //name of skill is abstract to make sure inheriting class implements
 
-        protected virtual void Start()
+        //need to replace this with an initializer somehow
+        protected virtual void Start() 
         {
             MethodInfo[] methods = GetType().GetMethods().Where(m => m.Name.Contains("Decorator")).ToArray();
             _methodDictionary = CreateMethodDictionary(methods, _decoratorList);

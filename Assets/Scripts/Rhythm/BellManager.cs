@@ -27,7 +27,7 @@ namespace RythmGame
         }
         private void Update()
         {
-            Debug.Log($"avatar pos is {_trackedCenterTransform.transform.position} in update");
+            //Debug.Log($"avatar pos is {_trackedCenterTransform.transform.position} in update");
             KeepBellsCenteredUpdate();
         }
 
