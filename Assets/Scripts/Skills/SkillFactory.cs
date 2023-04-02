@@ -9,8 +9,16 @@ namespace RythmGame
 {
     public static class SkillFactory
     {
-        private static Dictionary<string, Type> _abilitiesByName;
+
+        private static Dictionary<string, ISkill> _abilitiesByName;
         private static bool _isInitialized => _abilitiesByName != null;
+
+
+        //Constructor
+        static SkillFactory()
+        {
+            InitializeFactory();
+        }
 
         private static void InitializeFactory()
         {
@@ -23,35 +31,43 @@ namespace RythmGame
             var abilityTypes = Assembly.GetAssembly(typeof(ISkill)).GetTypes().
                 Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(ISkill)));
 
-            _abilitiesByName = new Dictionary<string, Type>();
+            _abilitiesByName = new Dictionary<string, ISkill>();
 
             //creates the dictionary of initialized ISkills
             foreach(var type in abilityTypes)
             {
                 var tempSkill = Activator.CreateInstance(type) as ISkill;
-                _abilitiesByName.Add(tempSkill._name, type);
+                _abilitiesByName.Add(tempSkill._name, tempSkill);
                 Debug.Log(type.FullName);
             }
         }
 
         public static ISkill GetSkill(string skillName)
         {
-            InitializeFactory();
-
             if(_abilitiesByName.ContainsKey(skillName))
             {
-                Type type = _abilitiesByName[skillName];
-                var skill = Activator.CreateInstance(type) as ISkill;
+                ISkill skill = _abilitiesByName[skillName];
                 return skill;
             }
 
             return null;
         }
+        /// <summary> Casts the skill <paramref name="skillName"/> </summary>
+        /// <param name="skillName"></param>
+        /// <param name="decorators"></param>
+        public static void CastSkill(string skillName, string[] decorators = null)
+        {
+            ISkill selectedSkill = GetSkill(skillName);
 
+            if (selectedSkill != null)
+                selectedSkill.Cast(decorators);
+            else
+                Debug.LogError($"Skill with name {skillName} not found");
+        }
+        /// <summary> Gets the skill names from the factory after initializing </summary>
         internal static string[] GetSkillNames()
         {
             Debug.Log("Get skill names started");
-            InitializeFactory();
             string[] keyArray = _abilitiesByName.Keys.ToArray();
             return keyArray;
         }

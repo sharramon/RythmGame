@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace RythmGame
 {
     public abstract class ISkill
     {
-        private static List<string> _decoratorList = new List<string> {
+        protected static List<string> _decoratorList = new List<string> {
             "PowerUp",
             "Multiply"
         };
@@ -16,9 +17,11 @@ namespace RythmGame
         public abstract string _name { get; } //name of skill is abstract to make sure inheriting class implements
 
         //need to replace this with an initializer somehow
-        protected virtual void Start() 
+        protected ISkill()
         {
-            MethodInfo[] methods = GetType().GetMethods().Where(m => m.Name.Contains("Decorator")).ToArray();
+            MethodInfo[] methods = this.GetType().GetMethods
+                (BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                .Where(m => m.Name.Contains("Decorator")).ToArray();
             _methodDictionary = CreateMethodDictionary(methods, _decoratorList);
         }
         /// <summary> Gets the decorator List /// </summary>
@@ -27,26 +30,44 @@ namespace RythmGame
             return _decoratorList;
         }
 
-        private Dictionary<string, MethodInfo> CreateMethodDictionary(MethodInfo[] methods, List<string> decoratorList)
+        protected Dictionary<string, MethodInfo> CreateMethodDictionary(MethodInfo[] methods, List<string> decoratorList)
         {
             HashSet<string> decoratorSet = new HashSet<string>(decoratorList);
             Dictionary<string, MethodInfo> methodDictionary = new Dictionary<string, MethodInfo>();
 
-            for (int listInd = 0; listInd < decoratorList.Count; listInd++)
+            foreach (string decoratorName in decoratorSet)
             {
-                string decoratorName = decoratorList[listInd];
-                var matchingMethods = methods.Where(m => m.Name.Contains(decoratorName)).ToArray();
-                if (matchingMethods.Length == 1)
+                MethodInfo method = null;
+                Type declaringType = this.GetType();
+
+                // Look for an overridden method in the derived class
+                while (declaringType != typeof(ISkill))
                 {
-                    methodDictionary.Add(decoratorName, matchingMethods[0]);
+                    method = declaringType.GetMethod(decoratorName + "Decorator", BindingFlags.Instance
+                        | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+                    if (method != null && method.IsVirtual)
+                    {
+                        break;
+                    }
+
+                    declaringType = declaringType.BaseType;
+                    method = null;
                 }
-                else if(matchingMethods.Length > 1)
+
+                if (method == null)
                 {
-                    Debug.LogError($"Too many decorator methods include {decoratorName}");
+                    // Get the base class method if the derived class doesn't override it
+                    method = typeof(ISkill).GetMethod(decoratorName + "Decorator", BindingFlags.NonPublic
+                        | BindingFlags.Instance);
+                }
+
+                if (method != null)
+                {
+                    methodDictionary.Add(decoratorName, method);
                 }
                 else
                 {
-                    Debug.LogError($"No decorator methods include {decoratorName}");
+                    Debug.LogError($"Could not find decorator method '{decoratorName}' in class '{GetType().Name}'");
                 }
             }
 
@@ -66,21 +87,23 @@ namespace RythmGame
 
         public void FailSkillDecorator()
         {
-            //some fail action/animation/effect
+            Debug.Log("Decorator Failed");
         }
         #endregion
 
-        public virtual void Cast(string[] activeDecorators)
+        public virtual void Cast(string[] activeDecorators = null)
         {
-            AddDecorators(activeDecorators);
+            if(activeDecorators != null && activeDecorators.Length > 0)
+                AddDecorators(activeDecorators);
         }
 
-        protected void AddDecorators(string[] activeDecorators)
+        protected virtual void AddDecorators(string[] activeDecorators)
         {
             for(int i = 0; i < activeDecorators.Length; i++)
             {
                 MethodInfo method = _methodDictionary[activeDecorators[i]];
                 object[] arguments = new object[] { };
+
                 method.Invoke(this, arguments);
             }
         }

@@ -73,10 +73,40 @@ namespace RythmGame
         {
             Debug.Log("Factory test started");
             string[] keyArray = SkillFactory.GetSkillNames();
+            string[] testDecorator = new string[0];
+
             foreach(string key in keyArray)
             {
                 Debug.Log($"Skill name is {key}");
+                CastSkill(key);
             }
+
+            string rightSKill = "Light";
+            string[] rightDecorator = { "Multiply" };
+
+            string leftSkill = "Speed";
+            string[] leftDecorator = { "PowerUp" };
+
+            CastSkill(rightSKill, rightDecorator);
+            CastSkill(leftSkill, leftDecorator);
         }
+
+        #region Skill Cast Methods
+        /// <summary> casts the skills depending on the info saved on the left 'wand' </summary>
+        public void CastSkillOnLeft()
+        {
+            CastSkill(_skillOnLeft, _decoratorOnLeft);
+        }
+        /// <summary> casts the skills depending on the info saved on the right 'wand' </summary>
+        public void CastSkillOnRight()
+        {
+            CastSkill(_skillOnRight, _decoratorOnRight);
+        }
+        /// <summary> casts skill </summary>
+        public void CastSkill(string skillName, string[] decorators = null)
+        {
+            SkillFactory.CastSkill(skillName, decorators);
+        }
+        #endregion
     }
 }
