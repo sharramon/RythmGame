@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SkillList
   m_EditorClassIdentifier: 
   _skillInfoList:
-  - _skillName: 
+  - _skillName: Light
     _skillPrefab: {fileID: 0}
-    _skillInput: 000000000000000000000000
+    _skillInput: 010000000200000003000000
   _decoratorInfoList:
   - _skillName: PowerUp
     _skillPrefab: {fileID: 0}

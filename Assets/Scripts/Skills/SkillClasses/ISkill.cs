@@ -3,22 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace RythmGame
 {
     public abstract class ISkill
     {
-        protected static List<string> _decoratorList = new List<string> {
-            "PowerUp",
-            "Multiply"
-        };
+        protected static List<string> _decoratorList = new List<string>(); 
+        //{
+        //    "PowerUp",
+        //    "Multiply"
+        //};
         protected Dictionary<string, MethodInfo> _methodDictionary = new Dictionary<string, MethodInfo>();
         public abstract string _name { get; } //name of skill is abstract to make sure inheriting class implements
 
         //need to replace this with an initializer somehow
         protected ISkill()
         {
+            InitializeDecoratorList().GetAwaiter().GetResult();
+
             MethodInfo[] methods = this.GetType().GetMethods
                 (BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                 .Where(m => m.Name.Contains("Decorator")).ToArray();
@@ -28,6 +34,16 @@ namespace RythmGame
         public static List<string> GetDecoratorList()
         {
             return _decoratorList;
+        }
+
+        /// <summary> Gets the string list of decorators defined in the scriptable object. /// </summary>
+        private async Task InitializeDecoratorList()
+        {
+            List<string> decoratorList = new List<string>();
+            AsyncOperationHandle<SkillScriptable> loadHandle = Addressables.LoadAssetAsync<SkillScriptable>("myAddressableAssetName");
+            await loadHandle.Task;
+            SkillScriptable skillScriptable = loadHandle.Result;
+            _decoratorList = skillScriptable.GetDecoratorNameList();
         }
 
         protected Dictionary<string, MethodInfo> CreateMethodDictionary(MethodInfo[] methods, List<string> decoratorList)
@@ -74,6 +90,8 @@ namespace RythmGame
             return methodDictionary;
         }
 
+
+
         #region Decorators
         protected virtual void PowerUpDecorator() 
         {
@@ -91,6 +109,7 @@ namespace RythmGame
         }
         #endregion
 
+        #region Cast methods
         public virtual void Cast(string[] activeDecorators = null)
         {
             if(activeDecorators != null && activeDecorators.Length > 0)
@@ -107,5 +126,8 @@ namespace RythmGame
                 method.Invoke(this, arguments);
             }
         }
+        #endregion
+
+
     }
 }

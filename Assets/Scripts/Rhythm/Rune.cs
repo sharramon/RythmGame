@@ -1,17 +1,46 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rune : MonoBehaviour
+namespace RythmGame
 {
-    public int _runeID;
-
-    public void OnTriggerEnter(Collider other)
+    public class Rune : MonoBehaviour
     {
-        if(RhythmKeeper.Instance.CheckIfInWindow())
-        {
-            Debug.Log("hit acquired, sending signal");
-        }
+        [SerializeField] private int _runeID;
+        private SkillManager _skillManager;
 
+        private void OnTriggerEnter(Collider other)
+        {
+            //lazily assign
+            if(_skillManager == null)
+            {
+                //just in case I forgot to include the skillmanager in the scene
+                if (SkillManager.Instance == null)
+                {
+                    Debug.LogError("No skill manager exists in scene");
+                    return;
+                }
+                _skillManager = SkillManager.Instance;
+            }
+
+            if (other.tag == "Wand" && RhythmKeeper.Instance.CheckIfInWindow())
+            {
+                Debug.Log("hit acquired, sending signal");
+                if(other.name.Contains("right", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    _skillManager.UpdateRunes("right", _runeID);
+                }
+                else if(other.name.Contains("left", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    _skillManager.UpdateRunes("left", _runeID);
+                }
+                else
+                {
+                    Debug.Log($"The wand object {other.name} does not include either left or right");
+                }
+            }
+
+        }
     }
 }
