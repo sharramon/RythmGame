@@ -12,38 +12,53 @@ namespace RythmGame
 {
     public abstract class ISkill
     {
-        protected static List<string> _decoratorList = new List<string>(); 
-        //{
-        //    "PowerUp",
-        //    "Multiply"
-        //};
+        protected static List<string> _decoratorList = new List<string>();
         protected Dictionary<string, MethodInfo> _methodDictionary = new Dictionary<string, MethodInfo>();
         public abstract string _name { get; } //name of skill is abstract to make sure inheriting class implements
+        protected bool _isInitialized = false;
 
+        #region initialization
         //need to replace this with an initializer somehow
         protected ISkill()
         {
-            InitializeDecoratorList().GetAwaiter().GetResult();
+            //InitializeISkill();
+        }
+        public async Task InitializeISkill()
+        {
+            Debug.Log("Initialization started");
+
+            await InitializeDecoratorList();
 
             MethodInfo[] methods = this.GetType().GetMethods
                 (BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                 .Where(m => m.Name.Contains("Decorator")).ToArray();
             _methodDictionary = CreateMethodDictionary(methods, _decoratorList);
-        }
-        /// <summary> Gets the decorator List /// </summary>
-        public static List<string> GetDecoratorList()
-        {
-            return _decoratorList;
+
+            _isInitialized = true;
         }
 
         /// <summary> Gets the string list of decorators defined in the scriptable object. /// </summary>
         private async Task InitializeDecoratorList()
         {
             List<string> decoratorList = new List<string>();
-            AsyncOperationHandle<SkillScriptable> loadHandle = Addressables.LoadAssetAsync<SkillScriptable>("myAddressableAssetName");
+            AsyncOperationHandle<SkillScriptable> loadHandle = Addressables.LoadAssetAsync<SkillScriptable>("Scriptables/SkillList");
             await loadHandle.Task;
-            SkillScriptable skillScriptable = loadHandle.Result;
-            _decoratorList = skillScriptable.GetDecoratorNameList();
+
+            if (loadHandle.IsDone && loadHandle.Status == AsyncOperationStatus.Succeeded)
+            {
+                Debug.Log($"addressable {loadHandle.Result.name} loaded successfully");
+                SkillScriptable skillScriptable = loadHandle.Result;
+                _decoratorList = skillScriptable.GetDecoratorNameList();
+                foreach(string decorator in _decoratorList)
+                {
+                    Debug.Log($"Decorator is {decorator}");
+                }
+            }
+            else
+            {
+                // Asset failed to load
+                Debug.LogError($"Failed to load asset: {loadHandle.OperationException.Message}");
+            }
         }
 
         protected Dictionary<string, MethodInfo> CreateMethodDictionary(MethodInfo[] methods, List<string> decoratorList)
@@ -89,7 +104,7 @@ namespace RythmGame
 
             return methodDictionary;
         }
-
+        #endregion
 
 
         #region Decorators
@@ -110,8 +125,11 @@ namespace RythmGame
         #endregion
 
         #region Cast methods
-        public virtual void Cast(string[] activeDecorators = null)
+        public async virtual Task Cast(string[] activeDecorators = null)
         {
+            if (!_isInitialized)
+                await InitializeISkill();
+
             if(activeDecorators != null && activeDecorators.Length > 0)
                 AddDecorators(activeDecorators);
         }
@@ -127,7 +145,5 @@ namespace RythmGame
             }
         }
         #endregion
-
-
     }
 }

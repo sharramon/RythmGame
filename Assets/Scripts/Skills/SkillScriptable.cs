@@ -56,7 +56,7 @@ namespace RythmGame
     {
         [SerializeField] string _skillName;
         [SerializeField] GameObject _skillPrefab;
-        [SerializeField] int[] _skillInput;
+        [SerializeField] List<int> _skillInput;
 
         public string GetSkillName()
         {
@@ -68,7 +68,7 @@ namespace RythmGame
             return _skillPrefab;
         }
 
-        public int[] GetSkillInput()
+        public List<int> GetSkillInput()
         {
             return _skillInput;
         }
@@ -77,7 +77,7 @@ namespace RythmGame
         {
             string key ="";
 
-            for(int i = 0; i < _skillInput.Length; i++)
+            for(int i = 0; i < _skillInput.Count; i++)
             {
                 key += $"{_skillInput[i]}_";
             }

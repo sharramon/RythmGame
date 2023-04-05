@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.Events;
+using System.Threading.Tasks;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.AddressableAssets;
 
 namespace RythmGame
 {
@@ -13,9 +16,15 @@ namespace RythmGame
         [SerializeField] int _maxRuneNumber;
         [SerializeField] int _decoratorSkillNumber; //The number of decorators a skill is allowed to have
 
+
+        private bool _isSkillInfoInitialized = false;
         //made a dictionary of all the skills and decorators
         Dictionary<string, SkillInfo> _skillDictionary = new Dictionary<string, SkillInfo>();
         Dictionary<string, SkillInfo> _decoratorDictionary = new Dictionary<string, SkillInfo>();
+
+        //dictionary of note inputs to skill/decorator names
+        Dictionary<List<int>, string> _skillNoteDictionary = new Dictionary<List<int>, string>();
+        Dictionary<List<int>, string> _decoratroNoteDictionary = new Dictionary<List<int>, string>();
 
         //runes that are saved on each hand
         [HideInInspector] public int[] _runesOnRight;
@@ -33,6 +42,7 @@ namespace RythmGame
         public UnityEvent<int[]> _onLeftRuneUpdated;
         public UnityEvent<int[]> _onRightRuneUpdated;
 
+        private bool _isSkillTested = false;
         protected override void Awake()
         {
             base.Awake(); // this is for the singleton
@@ -45,11 +55,6 @@ namespace RythmGame
             _onRightRuneUpdated.AddListener(CheckForSkills);
             _onLeftRuneUpdated.AddListener(CheckForSkills);
 
-            //check if decorators exist in ISkill
-            List<string> decoratorList = ISkill.GetDecoratorList();
-            List<string> scriptableDecoratorList = _skillScriptable.GetDecoratorNameList();
-            CheckIfDecoratorExists(decoratorList, scriptableDecoratorList);
-
             //create the dictionaries for the skills and decorators
             _skillDictionary = GetSkillDictionary(_skillScriptable.GetSkillList());
             _decoratorDictionary = GetSkillDictionary(_skillScriptable.GetDecoratorList());
@@ -61,24 +66,14 @@ namespace RythmGame
             //initialize the decorator string arrays
             _decoratorOnRight = new string[_decoratorSkillNumber];
             _decoratorOnLeft = new string[_decoratorSkillNumber];
-
-            //ability factory test
-            SkillFactoryTest();
         }
 
         void Update()
         {
-
-        }
-
-        private void CheckIfDecoratorExists(List<string> decoratorList, List<string> scriptableDecoratorList)
-        {
-            for(int i = 0; i < scriptableDecoratorList.Count; i++)
+            if(!_isSkillTested)
             {
-                if(!decoratorList.Contains(scriptableDecoratorList[i]))
-                {
-                    Debug.LogError($"ISkill does not contain the decorator {scriptableDecoratorList[i]}. Consider adding");
-                }
+                _isSkillTested = true;
+                SkillFactoryTest();
             }
         }
 
@@ -105,7 +100,7 @@ namespace RythmGame
             foreach(string key in keyArray)
             {
                 Debug.Log($"Skill name is {key}");
-                CastSkill(key);
+                //CastSkill(key);
             }
 
             string rightSKill = "Light";
@@ -157,9 +152,54 @@ namespace RythmGame
             }
         }
 
-        private void CheckForSkills(int[] runeArray)
+        private async Task InitializeNotesDictionary()
         {
+            AsyncOperationHandle<SkillScriptable> loadHandle = Addressables.LoadAssetAsync<SkillScriptable>("Scriptables/SkillList");
+            await loadHandle.Task;
 
+            if (loadHandle.IsDone && loadHandle.Status == AsyncOperationStatus.Succeeded)
+            {
+                Debug.Log($"addressable {loadHandle.Result.name} loaded successfully");
+                SkillScriptable skillScriptable = loadHandle.Result;
+
+                List<SkillInfo> _skillList = skillScriptable.GetSkillList();
+                foreach(SkillInfo skill in _skillList)
+                {
+                    _skillNoteDictionary.Add(skill.GetSkillInput(), skill.GetSkillName());
+                    _skillDictionary.Add(skill.GetSkillName(), skill);
+
+                }
+
+                List<SkillInfo> _decoratorList = skillScriptable.GetDecoratorList();
+                foreach(SkillInfo decorator in _decoratorList)
+                {
+                    _decoratroNoteDictionary.Add(decorator.GetSkillInput(), decorator.GetSkillName());
+                    _decoratorDictionary.Add(decorator.GetSkillName(), decorator);
+                }
+
+            }
+            else
+            {
+                // Asset failed to load
+                Debug.LogError($"Failed to load asset: {loadHandle.OperationException.Message}");
+            }
+
+            _isSkillInfoInitialized = true;
         }
+
+        private async void CheckForSkills(int[] runeArray)
+        {
+            if (!_isSkillInfoInitialized)
+                await InitializeNotesDictionary();
+
+            //need to find an efficient way to compare lists when the lengthts are different
+        }
+
+        private IEnumerator WaitForSecs(float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+        }
+
+
     }
 }

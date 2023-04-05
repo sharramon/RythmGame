@@ -3,7 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace RythmGame
 {
@@ -22,9 +25,9 @@ namespace RythmGame
             Debug.Log("Powered Up");
         }
 
-        public override void Cast(string[] activeDecorators)
+        public async override Task Cast(string[] activeDecorators)
         {
-            base.Cast(activeDecorators);
+            await base.Cast(activeDecorators);
             Debug.Log("Speed skill cast");
         }
     }

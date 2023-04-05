@@ -12,11 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
   m_Name: MyAddressables
   m_EditorClassIdentifier: 
-  m_GroupName: Packed Assets
+  m_GroupName: MyAddressables
   m_Data:
     m_SerializedData: []
   m_GUID: 22c603fe2f755c94a88f1a2494d61444
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: f7ade8ad1a46cb348bcd0b0cd7a23418
+    m_Address: Scriptables/SkillList
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 1081fd70508d8f343a903559ca4777d9, type: 2}
   m_SchemaSet:
