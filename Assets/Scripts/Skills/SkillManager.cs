@@ -25,6 +25,8 @@ namespace RythmGame
         //dictionary of note inputs to skill/decorator names
         Dictionary<List<int>, string> _skillNoteDictionary = new Dictionary<List<int>, string>();
         Dictionary<List<int>, string> _decoratroNoteDictionary = new Dictionary<List<int>, string>();
+        List<int> _noteLengths; //this is a list of all possible lengths of notes for skill activation
+                                //used when checking if any skills have to be updated
 
         //runes that are saved on each hand
         [HideInInspector] public int[] _runesOnRight;
@@ -39,15 +41,15 @@ namespace RythmGame
         [HideInInspector] public string[] _decoratorOnLeft;
 
         //Event to invoke when rune has been hit
-        public UnityEvent<int[]> _onLeftRuneUpdated;
-        public UnityEvent<int[]> _onRightRuneUpdated;
+        public UnityEvent<int[], string> _onLeftRuneUpdated;
+        public UnityEvent<int[], string> _onRightRuneUpdated;
 
         private bool _isSkillTested = false;
         protected override void Awake()
         {
             base.Awake(); // this is for the singleton
-            _onRightRuneUpdated = new UnityEvent<int[]>();
-            _onLeftRuneUpdated = new UnityEvent<int[]>();
+            _onRightRuneUpdated = new UnityEvent<int[], string>();
+            _onLeftRuneUpdated = new UnityEvent<int[], string>();
         }
 
         void Start()
@@ -131,20 +133,21 @@ namespace RythmGame
         }
         #endregion
 
+        /// <summary> Updates the rune array and the invokes </summary>
         public void UpdateRunes(string side, int runeNumber)
         {
             if(side == "right")
             {
                 Array.Copy(_runesOnRight, 0, _runesOnRight, 1, _runesOnRight.Length - 1);
                 _runesOnRight[0] = runeNumber;
-                _onRightRuneUpdated.Invoke(_runesOnRight);
+                _onRightRuneUpdated.Invoke(_runesOnRight, side);
 
             }
             else if(side == "left")
             {
                 Array.Copy(_runesOnLeft, 0, _runesOnLeft, 1, _runesOnLeft.Length - 1);
                 _runesOnLeft[0] = runeNumber;
-                _onLeftRuneUpdated.Invoke(_runesOnLeft);
+                _onLeftRuneUpdated.Invoke(_runesOnLeft, side);
             }
             else
             {
@@ -152,6 +155,8 @@ namespace RythmGame
             }
         }
 
+        /// <summary> Initializes the list of skills and decorators from the scriptable object.
+        /// Scriptable object is a scriptable object just so I can update it on the fly if I want</summary>
         private async Task InitializeNotesDictionary()
         {
             AsyncOperationHandle<SkillScriptable> loadHandle = Addressables.LoadAssetAsync<SkillScriptable>("Scriptables/SkillList");
@@ -161,10 +166,15 @@ namespace RythmGame
             {
                 Debug.Log($"addressable {loadHandle.Result.name} loaded successfully");
                 SkillScriptable skillScriptable = loadHandle.Result;
+                HashSet<int> inputLengthSet = new HashSet<int>();
 
                 List<SkillInfo> _skillList = skillScriptable.GetSkillList();
                 foreach(SkillInfo skill in _skillList)
                 {
+                    List<int> skillInput = skill.GetSkillInput();
+                    int skillInputLength = skillInput.Count();
+                    inputLengthSet.Add(skillInputLength);
+
                     _skillNoteDictionary.Add(skill.GetSkillInput(), skill.GetSkillName());
                     _skillDictionary.Add(skill.GetSkillName(), skill);
 
@@ -173,9 +183,15 @@ namespace RythmGame
                 List<SkillInfo> _decoratorList = skillScriptable.GetDecoratorList();
                 foreach(SkillInfo decorator in _decoratorList)
                 {
+                    List<int> decoratorInput = decorator.GetSkillInput();
+                    int decoratorInputLength = decoratorInput.Count();
+                    inputLengthSet.Add(decoratorInputLength);
+
                     _decoratroNoteDictionary.Add(decorator.GetSkillInput(), decorator.GetSkillName());
                     _decoratorDictionary.Add(decorator.GetSkillName(), decorator);
                 }
+
+                _noteLengths = inputLengthSet.OrderBy(x => x).ToList(); //get all the input lengths in ascending order
 
             }
             else
@@ -186,13 +202,85 @@ namespace RythmGame
 
             _isSkillInfoInitialized = true;
         }
-
-        private async void CheckForSkills(int[] runeArray)
+        /// <summary> Checks for skills on whatever stick it's on with <paramref name="runeArray"/> being
+        /// the array from either left or right wand</summary>
+        /// <param name="runeArray"></param>
+        private async void CheckForSkills(int[] runeArray, string side)
         {
+            //lazy instantiation
             if (!_isSkillInfoInitialized)
                 await InitializeNotesDictionary();
 
-            //need to find an efficient way to compare lists when the lengthts are different
+            bool skillFound = false;
+            bool decoratorFound = false;
+
+            foreach(int noteLength in _noteLengths)
+            {
+                List<int> currentNotes = runeArray.Take(noteLength).ToList();
+                if(_skillNoteDictionary.ContainsKey(currentNotes))
+                {
+                    if(skillFound == true)
+                    {
+                        Debug.LogError($"Skill has already been found once, which means there's an overlap between");
+                        if (side == "right")
+                            Debug.LogError($"{_skillOnRight} and {_skillNoteDictionary[currentNotes]}");
+                        else
+                            Debug.LogError($"{_skillOnLeft} and {_skillNoteDictionary[currentNotes]}");
+                    }
+
+                    if(side == "right")
+                    {
+                        _skillOnRight = _skillNoteDictionary[currentNotes];
+                    }
+                    else if(side == "left")
+                    {
+                        _skillOnLeft = _skillNoteDictionary[currentNotes];
+                    }
+                    else
+                    {
+                        Debug.LogError($"side is {side}");
+                    }
+
+                    skillFound = true;
+                    return;
+                }
+
+                if(_decoratroNoteDictionary.ContainsKey(currentNotes))
+                {
+                    if (decoratorFound == true)
+                    {
+                        Debug.LogError($"Decorator has already been found once, which means there's an overlap between");
+                        if (side == "right")
+                            Debug.LogError($"{_decoratorOnRight[0]} and {_skillNoteDictionary[currentNotes]}");
+                        else
+                            Debug.LogError($"{_decoratorOnRight[0]} and {_skillNoteDictionary[currentNotes]}");
+                    }
+
+                    if (side == "right")
+                    {
+                        if(_decoratorOnRight.Length > 1)
+                            Array.Copy(_decoratorOnRight, 0, _decoratorOnRight, 1, _decoratorOnRight.Length - 1);
+
+                        _decoratorOnRight[0] = _decoratroNoteDictionary[currentNotes];
+
+                    }
+                    else if (side == "left")
+                    {
+                        if (_decoratorOnLeft.Length > 1)
+                            Array.Copy(_decoratorOnLeft, 0, _decoratorOnLeft, 1, _decoratorOnLeft.Length - 1);
+
+                        _decoratorOnLeft[0] = _decoratroNoteDictionary[currentNotes];
+                    }
+                    else
+                    {
+                        Debug.LogError($"side is {side}");
+                    }
+
+                    decoratorFound = true;
+                    return;
+                }
+
+            }
         }
 
         private IEnumerator WaitForSecs(float seconds)

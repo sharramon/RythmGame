@@ -24,6 +24,8 @@ namespace RythmGame
                 _skillManager = SkillManager.Instance;
             }
 
+            //if an object tagged with Wand hits, check if the gameobject has left or right in its name then
+            //send the rune ID to the correct one
             if (other.tag == "Wand" && RhythmKeeper.Instance.CheckIfInWindow())
             {
                 Debug.Log("hit acquired, sending signal");
