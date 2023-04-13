@@ -11,13 +11,17 @@ public class ManualActionController : MonoBehaviour
     {
         if(ReadValue(gripValue.action) > 0.1)
         {
-            Debug.Log(ReadValue(gripValue.action));
-            Debug.Log(gripValue.action.ReadValue<float>());
+            //Debug.Log(ReadValue(gripValue.action));
+            //Debug.Log(gripValue.action.ReadValue<float>());
         }
         if (ReadValue(thumbTouch.action) > 0)
-            Debug.Log(ReadValue(thumbTouch.action));
-        if(triggerValue.action.ReadValue<float>() > 0.1)
-            Debug.Log(triggerValue.action.ReadValue<float>());
+        {
+            //Debug.Log(ReadValue(thumbTouch.action));
+        }
+        if (triggerValue.action.ReadValue<float>() > 0.1) 
+        {
+            //Debug.Log(triggerValue.action.ReadValue<float>());
+        }
     }
 
     private void OnEnable()

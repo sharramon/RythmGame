@@ -6,10 +6,15 @@ namespace RythmGame
 {
     public class BellManager : Singleton<BellManager>
     {
+        [Header ("Bell Position variables")]
         [SerializeField] GameObject _trackedCenterTransform;
         [SerializeField] GameObject _bellCenterObject;
         [SerializeField] float _bellDistance;
         [SerializeField] int _noteArraySize;
+        [SerializeField] float _xOffset;
+        [SerializeField] float _yOffset;
+        [SerializeField] float _zOffset;
+        [SerializeField] float _yRotOffset;
 
         private int[] _rightNotes;
         [HideInInspector] public string _rightStoredAbility;
@@ -32,28 +37,10 @@ namespace RythmGame
         }
 
         /// <summary> Keeps Bells centered on the _trackedCenterTransform position </summary>
-        private IEnumerator KeepBellsCentered()
-        {
-            while (true)
-            {
-                //Vector3 forwardDirection = _trackedCenterTransform.up;
-                //forwardDirection = new Vector3(forwardDirection.x, 0, forwardDirection.z);
-                //Vector3 bellLocalPosition = forwardDirection * _bellDistance;
-                //_bellCenterObject.transform.localPosition = _trackedCenterTransform.transform.localPosition;
-                Debug.Log($"avatar pos is {_trackedCenterTransform.transform.position} in coroutine");
-
-                yield return null;
-
-            }
-        }
-
-        /// <summary> Keeps Bells centered on the _trackedCenterTransform position </summary>
         private void KeepBellsCenteredUpdate()
         {
-            Vector3 forwardDirection = _trackedCenterTransform.transform.up;
-            forwardDirection = new Vector3(forwardDirection.x, 0, forwardDirection.z);
-            Vector3 bellLocalPosition = forwardDirection * _bellDistance;
-            _bellCenterObject.transform.position = _trackedCenterTransform.transform.position + bellLocalPosition;
+            _bellCenterObject.transform.position = _trackedCenterTransform.transform.position + _yOffset * _trackedCenterTransform.transform.up + _xOffset * _trackedCenterTransform.transform.right + _zOffset * _trackedCenterTransform.transform.forward;
+            _bellCenterObject.transform.eulerAngles = new Vector3(_bellCenterObject.transform.eulerAngles.x, _yRotOffset + _trackedCenterTransform.transform.eulerAngles.y, _bellCenterObject.transform.eulerAngles.z);
         }
         /// <summary> Updates the right note array with a new note </summary>
         public void UpdateRightNoteArray(int newNote)

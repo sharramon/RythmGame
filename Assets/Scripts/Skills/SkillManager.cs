@@ -12,8 +12,10 @@ namespace RythmGame
 {
     public class SkillManager : Singleton<SkillManager>
     {
+        [SerializeField] bool _isTestingWindow = false;
+
         [SerializeField] SkillScriptable _skillScriptable;
-        [SerializeField] int _maxRuneNumber;
+        [SerializeField] int _maxRuneNumber = 10;
         [SerializeField] int _decoratorSkillNumber; //The number of decorators a skill is allowed to have
 
 
@@ -29,8 +31,8 @@ namespace RythmGame
                                 //used when checking if any skills have to be updated
 
         //runes that are saved on each hand
-        [HideInInspector] public int[] _runesOnRight;
-        [HideInInspector] public int[] _runesOnLeft;
+        public int[] _runesOnRight;
+        public int[] _runesOnLeft;
 
         //skills that are saved on each hand
         [HideInInspector] public string _skillOnRight;
@@ -136,6 +138,9 @@ namespace RythmGame
         /// <summary> Updates the rune array and the invokes </summary>
         public void UpdateRunes(string side, int runeNumber)
         {
+            if (_isTestingWindow && !RhythmKeeper.Instance.CheckIfInWindow())
+                return;
+
             if(side == "right")
             {
                 Array.Copy(_runesOnRight, 0, _runesOnRight, 1, _runesOnRight.Length - 1);
@@ -207,6 +212,7 @@ namespace RythmGame
         /// <param name="runeArray"></param>
         private async void CheckForSkills(int[] runeArray, string side)
         {
+            Debug.Log("Check for skills started");
             //lazy instantiation
             if (!_isSkillInfoInitialized)
                 await InitializeNotesDictionary();

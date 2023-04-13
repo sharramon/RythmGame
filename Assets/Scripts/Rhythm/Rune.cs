@@ -28,14 +28,16 @@ namespace RythmGame
             //send the rune ID to the correct one
             if (other.tag == "Wand" && RhythmKeeper.Instance.CheckIfInWindow())
             {
-                Debug.Log("hit acquired, sending signal");
+                //Debug.Log("hit acquired, sending signal");
                 if(other.name.Contains("right", StringComparison.InvariantCultureIgnoreCase))
                 {
                     _skillManager.UpdateRunes("right", _runeID);
+                    Debug.Log($"right, {_runeID}");
                 }
                 else if(other.name.Contains("left", StringComparison.InvariantCultureIgnoreCase))
                 {
                     _skillManager.UpdateRunes("left", _runeID);
+                    Debug.Log($"left, {_runeID}");
                 }
                 else
                 {
