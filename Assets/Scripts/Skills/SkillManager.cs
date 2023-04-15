@@ -25,8 +25,8 @@ namespace RythmGame
         Dictionary<string, SkillInfo> _decoratorDictionary = new Dictionary<string, SkillInfo>();
 
         //dictionary of note inputs to skill/decorator names
-        Dictionary<List<int>, string> _skillNoteDictionary = new Dictionary<List<int>, string>();
-        Dictionary<List<int>, string> _decoratroNoteDictionary = new Dictionary<List<int>, string>();
+        Dictionary<string, string> _skillNoteDictionary = new Dictionary<string, string>();
+        Dictionary<string, string> _decoratroNoteDictionary = new Dictionary<string, string>();
         List<int> _noteLengths; //this is a list of all possible lengths of notes for skill activation
                                 //used when checking if any skills have to be updated
 
@@ -180,9 +180,10 @@ namespace RythmGame
                     int skillInputLength = skillInput.Count();
                     inputLengthSet.Add(skillInputLength);
 
-                    _skillNoteDictionary.Add(skill.GetSkillInput(), skill.GetSkillName());
+                    _skillNoteDictionary.Add(string.Join(",", skillInput), skill.GetSkillName());
                     _skillDictionary.Add(skill.GetSkillName(), skill);
 
+                    Debug.Log($"Skill Input : {string.Join(",", skillInput)}");
                 }
 
                 List<SkillInfo> _decoratorList = skillScriptable.GetDecoratorList();
@@ -192,8 +193,10 @@ namespace RythmGame
                     int decoratorInputLength = decoratorInput.Count();
                     inputLengthSet.Add(decoratorInputLength);
 
-                    _decoratroNoteDictionary.Add(decorator.GetSkillInput(), decorator.GetSkillName());
+                    _decoratroNoteDictionary.Add(string.Join(",", decoratorInput), decorator.GetSkillName());
                     _decoratorDictionary.Add(decorator.GetSkillName(), decorator);
+
+                    Debug.Log($"Skill Input : {string.Join(",", decoratorInput)}");
                 }
 
                 _noteLengths = inputLengthSet.OrderBy(x => x).ToList(); //get all the input lengths in ascending order
@@ -220,11 +223,17 @@ namespace RythmGame
             bool skillFound = false;
             bool decoratorFound = false;
 
+            Debug.Log($"Length of note lengths is {_noteLengths.Count}");
+
             foreach(int noteLength in _noteLengths)
             {
-                List<int> currentNotes = runeArray.Take(noteLength).ToList();
+                Debug.Log($"length : {noteLength}");
+                List<int> currentNotesList = runeArray.Take(noteLength).ToList();
+                string currentNotes = string.Join(",", currentNotesList);
+                Debug.Log($"Checking with {currentNotes}");
                 if(_skillNoteDictionary.ContainsKey(currentNotes))
                 {
+                    Debug.Log("Found Key");
                     if(skillFound == true)
                     {
                         Debug.LogError($"Skill has already been found once, which means there's an overlap between");
@@ -237,10 +246,12 @@ namespace RythmGame
                     if(side == "right")
                     {
                         _skillOnRight = _skillNoteDictionary[currentNotes];
+                        Debug.Log($"Skill {_skillNoteDictionary[currentNotes]} is stored on right");
                     }
                     else if(side == "left")
                     {
                         _skillOnLeft = _skillNoteDictionary[currentNotes];
+                        Debug.Log($"Skill {_skillNoteDictionary[currentNotes]} is stored on left");
                     }
                     else
                     {
@@ -269,6 +280,7 @@ namespace RythmGame
 
                         _decoratorOnRight[0] = _decoratroNoteDictionary[currentNotes];
 
+                        Debug.Log($"Decorator {_decoratroNoteDictionary[currentNotes]} is stored on right");
                     }
                     else if (side == "left")
                     {
@@ -276,6 +288,8 @@ namespace RythmGame
                             Array.Copy(_decoratorOnLeft, 0, _decoratorOnLeft, 1, _decoratorOnLeft.Length - 1);
 
                         _decoratorOnLeft[0] = _decoratroNoteDictionary[currentNotes];
+
+                        Debug.Log($"Decorator {_decoratroNoteDictionary[currentNotes]} is stored on left");
                     }
                     else
                     {
