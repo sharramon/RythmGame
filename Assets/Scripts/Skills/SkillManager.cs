@@ -129,7 +129,7 @@ namespace RythmGame
             CastSkill(_skillOnRight, _decoratorOnRight);
         }
         /// <summary> casts skill </summary>
-        public void CastSkill(string skillName, string[] decorators = null)
+        private void CastSkill(string skillName, string[] decorators = null)
         {
             SkillFactory.CastSkill(skillName, decorators);
         }

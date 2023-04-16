@@ -3013,6 +3013,7 @@ GameObject:
   m_Component:
   - component: {fileID: 605663814}
   - component: {fileID: 605663815}
+  - component: {fileID: 605663816}
   m_Layer: 0
   m_Name: SkillManager
   m_TagString: Untagged
@@ -3047,6 +3048,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 782e54928b1ab874482eb46527da95a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isTestingWindow: 0
   _skillScriptable: {fileID: 11400000, guid: f7ade8ad1a46cb348bcd0b0cd7a23418, type: 2}
   _maxRuneNumber: 10
   _decoratorSkillNumber: 1
@@ -3062,6 +3064,20 @@ MonoBehaviour:
   _onRightRuneUpdated:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &605663816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605663812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af03bf509967cb14a8cab21477d3122e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rightActionController: {fileID: 274930848}
+  _leftActionController: {fileID: 1248709371}
 --- !u!1 &609708770
 GameObject:
   m_ObjectHideFlags: 0
@@ -3383,7 +3399,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1 &861400531
 GameObject:
   m_ObjectHideFlags: 0
@@ -4567,7 +4583,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1 &1248709364
 GameObject:
   m_ObjectHideFlags: 0

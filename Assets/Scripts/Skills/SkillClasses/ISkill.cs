@@ -127,21 +127,31 @@ namespace RythmGame
         #region Cast methods
         public async virtual Task Cast(string[] activeDecorators = null)
         {
+            Debug.Log($"Initialization state of skill is : {_isInitialized}");
             if (!_isInitialized)
                 await InitializeISkill();
 
-            if(activeDecorators != null && activeDecorators.Length > 0)
+            Debug.Log($"active decorator state is {activeDecorators == null} for null, with length {activeDecorators.Length}");
+            if (activeDecorators != null && activeDecorators.Length > 0)
                 AddDecorators(activeDecorators);
         }
 
         protected virtual void AddDecorators(string[] activeDecorators)
         {
-            for(int i = 0; i < activeDecorators.Length; i++)
+            for (int i = 0; i < activeDecorators.Length; i++)
             {
-                MethodInfo method = _methodDictionary[activeDecorators[i]];
-                object[] arguments = new object[] { };
-
-                method.Invoke(this, arguments);
+                if(activeDecorators[i] == null || !_methodDictionary.ContainsKey(activeDecorators[i]))
+                {
+                    Debug.Log($"The method dictionary does not contain {activeDecorators[i]}");
+                    continue;
+                }
+                else
+                {
+                    Debug.Log($"The method dictionary does contain {activeDecorators[i]}");
+                    MethodInfo method = _methodDictionary[activeDecorators[i]];
+                    object[] arguments = new object[] { };
+                    method.Invoke(this, arguments);
+                }
             }
         }
         #endregion

@@ -21,19 +21,17 @@ namespace RythmGame
             Debug.Log($"Constructor for {declaringType.Name} called");
         } 
 
-        protected override void MultiplyDecorator()
+        protected override void PowerUpDecorator()
         {
-            Debug.Log("Made more multiple");
+            Debug.Log("Made more powerful");
         }
 
         public async override Task Cast(string[] activeDecorators)
         {
+            Debug.Log("Light skill entered");
             await base.Cast(activeDecorators);
             Debug.Log("Light skill cast");
         }
-        //protected override void AddDecorators(string[] activeDecorators)
-        //{
-        //    base.AddDecorators(activeDecorators);
-        //}
+
     }
 }
