@@ -18,6 +18,9 @@ namespace RythmGame
         [SerializeField] int _maxRuneNumber = 10;
         [SerializeField] int _decoratorSkillNumber; //The number of decorators a skill is allowed to have
 
+        [Header("Wand Info")]
+        public Transform _leftWantTip;
+        public Transform _rightWantTip;
 
         private bool _isSkillInfoInitialized = false;
         //made a dictionary of all the skills and decorators

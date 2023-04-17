@@ -16,6 +16,7 @@ namespace RythmGame
         protected Dictionary<string, MethodInfo> _methodDictionary = new Dictionary<string, MethodInfo>();
         public abstract string _name { get; } //name of skill is abstract to make sure inheriting class implements
         protected bool _isInitialized = false;
+        protected SkillInfo _skillInfo;
 
         #region initialization
         //need to replace this with an initializer somehow
