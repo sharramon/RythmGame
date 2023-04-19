@@ -14,15 +14,15 @@ namespace RythmGame
     {
         [SerializeField] bool _isTestingWindow = false;
 
-        [SerializeField] SkillScriptable _skillScriptable;
         [SerializeField] int _maxRuneNumber = 10;
         [SerializeField] int _decoratorSkillNumber; //The number of decorators a skill is allowed to have
 
         [Header("Wand Info")]
-        public Transform _leftWantTip;
-        public Transform _rightWantTip;
+        public Transform _leftWandTip;
+        public Transform _rightWandTip;
 
         private bool _isSkillInfoInitialized = false;
+        private SkillScriptable _skillScriptable;
         //made a dictionary of all the skills and decorators
         Dictionary<string, SkillInfo> _skillDictionary = new Dictionary<string, SkillInfo>();
         Dictionary<string, SkillInfo> _decoratorDictionary = new Dictionary<string, SkillInfo>();
@@ -53,6 +53,7 @@ namespace RythmGame
         protected override void Awake()
         {
             base.Awake(); // this is for the singleton
+            InitializeScriptable();
             _onRightRuneUpdated = new UnityEvent<int[], string>();
             _onLeftRuneUpdated = new UnityEvent<int[], string>();
         }
@@ -61,10 +62,6 @@ namespace RythmGame
         {
             _onRightRuneUpdated.AddListener(CheckForSkills);
             _onLeftRuneUpdated.AddListener(CheckForSkills);
-
-            //create the dictionaries for the skills and decorators
-            _skillDictionary = GetSkillDictionary(_skillScriptable.GetSkillList());
-            _decoratorDictionary = GetSkillDictionary(_skillScriptable.GetDecoratorList());
 
             //initialize the rune arrays with -1
             _runesOnRight = Enumerable.Repeat(-1, _maxRuneNumber).ToArray();
@@ -116,25 +113,25 @@ namespace RythmGame
             string leftSkill = "Speed";
             string[] leftDecorator = { "PowerUp" };
 
-            CastSkill(rightSKill, rightDecorator);
-            CastSkill(leftSkill, leftDecorator);
+            CastSkill(rightSKill, "right", rightDecorator);
+            //CastSkill(leftSkill, leftDecorator);
         }
 
         #region Skill Cast Methods
         /// <summary> casts the skills depending on the info saved on the left 'wand' </summary>
         public void CastSkillOnLeft()
         {
-            CastSkill(_skillOnLeft, _decoratorOnLeft);
+            CastSkill(_skillOnLeft, "left", _decoratorOnLeft);
         }
         /// <summary> casts the skills depending on the info saved on the right 'wand' </summary>
         public void CastSkillOnRight()
         {
-            CastSkill(_skillOnRight, _decoratorOnRight);
+            CastSkill(_skillOnRight, "right", _decoratorOnRight);
         }
         /// <summary> casts skill </summary>
-        private void CastSkill(string skillName, string[] decorators = null)
+        private void CastSkill(string skillName, string side, string[] decorators = null)
         {
-            SkillFactory.CastSkill(skillName, decorators);
+            SkillFactory.CastSkill(skillName, side, decorators);
         }
         #endregion
 
@@ -163,6 +160,14 @@ namespace RythmGame
             }
         }
 
+        private async void InitializeScriptable()
+        {
+            await InitializeNotesDictionary();
+            //create the dictionaries for the skills and decorators
+            _skillDictionary = GetSkillDictionary(_skillScriptable.GetSkillList());
+            _decoratorDictionary = GetSkillDictionary(_skillScriptable.GetDecoratorList());
+        }
+
         /// <summary> Initializes the list of skills and decorators from the scriptable object.
         /// Scriptable object is a scriptable object just so I can update it on the fly if I want</summary>
         private async Task InitializeNotesDictionary()
@@ -173,10 +178,10 @@ namespace RythmGame
             if (loadHandle.IsDone && loadHandle.Status == AsyncOperationStatus.Succeeded)
             {
                 Debug.Log($"addressable {loadHandle.Result.name} loaded successfully");
-                SkillScriptable skillScriptable = loadHandle.Result;
+                _skillScriptable = loadHandle.Result;
                 HashSet<int> inputLengthSet = new HashSet<int>();
 
-                List<SkillInfo> _skillList = skillScriptable.GetSkillList();
+                List<SkillInfo> _skillList = _skillScriptable.GetSkillList();
                 foreach(SkillInfo skill in _skillList)
                 {
                     List<int> skillInput = skill.GetSkillInput();
@@ -189,7 +194,7 @@ namespace RythmGame
                     Debug.Log($"Skill Input : {string.Join(",", skillInput)}");
                 }
 
-                List<SkillInfo> _decoratorList = skillScriptable.GetDecoratorList();
+                List<SkillInfo> _decoratorList = _skillScriptable.GetDecoratorList();
                 foreach(SkillInfo decorator in _decoratorList)
                 {
                     List<int> decoratorInput = decorator.GetSkillInput();
@@ -213,6 +218,21 @@ namespace RythmGame
 
             _isSkillInfoInitialized = true;
         }
+
+        public async Task<SkillScriptable> GetSkillScriptable()
+        {
+            if (_skillScriptable == null)
+            {
+                // Wait until _skillScriptable is initialized
+                while (!_isSkillInfoInitialized)
+                {
+                    await Task.Yield();
+                }
+            }
+
+            return _skillScriptable;
+        }
+
         /// <summary> Checks for skills on whatever stick it's on with <paramref name="runeArray"/> being
         /// the array from either left or right wand</summary>
         /// <param name="runeArray"></param>
@@ -302,7 +322,6 @@ namespace RythmGame
                     decoratorFound = true;
                     return;
                 }
-
             }
         }
 

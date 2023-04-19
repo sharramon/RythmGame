@@ -14,8 +14,9 @@ namespace RythmGame
     {
         public override string _name { get { return "Light"; } }
 
-        public LightSkill() : base()
+        protected override void Awake()
         {
+            base.Awake();
             Type declaringType = this.GetType();
             Debug.Log($"This is class {declaringType.Name}");
             Debug.Log($"Constructor for {declaringType.Name} called");
@@ -26,11 +27,21 @@ namespace RythmGame
             Debug.Log("Made more powerful");
         }
 
-        public async override Task Cast(string[] activeDecorators)
+        public async override Task Cast(string side, string[] activeDecorators)
         {
-            Debug.Log("Light skill entered");
-            await base.Cast(activeDecorators);
+            await base.Cast(side, activeDecorators);
             Debug.Log("Light skill cast");
+            Debug.Log($"Prefab name is");
+            Debug.Log($"{_skillInfo.GetGameObject().name}");
+            GameObject _prefab = _skillInfo.GetGameObject();
+            if(side == "left")
+            {
+                Instantiate(_prefab, SkillManager.Instance._leftWandTip); 
+            }
+            else
+            {
+                Instantiate(_prefab, SkillManager.Instance._rightWandTip);
+            }
         }
 
     }

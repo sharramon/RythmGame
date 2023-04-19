@@ -36,7 +36,8 @@ namespace RythmGame
             //creates the dictionary of initialized ISkills
             foreach(var type in abilityTypes)
             {
-                var tempSkill = Activator.CreateInstance(type) as ISkill;
+                GameObject managerObject = SkillManager.Instance.transform.gameObject;
+                var tempSkill = managerObject.AddComponent(type) as ISkill;
                 _abilitiesByName.Add(tempSkill._name, tempSkill);
                 Debug.Log(type.FullName);
             }
@@ -55,12 +56,12 @@ namespace RythmGame
         /// <summary> Casts the skill <paramref name="skillName"/> </summary>
         /// <param name="skillName"></param>
         /// <param name="decorators"></param>
-        public static void CastSkill(string skillName, string[] decorators = null)
+        public static void CastSkill(string skillName, string side, string[] decorators = null)
         {
             ISkill selectedSkill = GetSkill(skillName);
 
             if (selectedSkill != null)
-                selectedSkill.Cast(decorators);
+                selectedSkill.Cast(side, decorators);
             else
                 Debug.LogError($"Skill with name {skillName} not found");
         }

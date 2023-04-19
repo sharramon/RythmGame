@@ -30,6 +30,17 @@ namespace RythmGame
         {
             return _skillInfoList;
         }
+        public SkillInfo GetSkillWithName(string skillName)
+        {
+            for (int i = 0; i < _skillInfoList.Count; i++)
+            {
+                if (_skillInfoList[i].GetSkillName() == skillName)
+                {
+                    return _skillInfoList[i];
+                }
+            }
+            return null; // Skill with the specified name was not found
+        }
         /// <summary>
         /// Returns the string names of the decorators
         /// </summary>

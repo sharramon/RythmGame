@@ -10,7 +10,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace RythmGame
 {
-    public abstract class ISkill
+    public abstract class ISkill : MonoBehaviour
     {
         protected static List<string> _decoratorList = new List<string>();
         protected Dictionary<string, MethodInfo> _methodDictionary = new Dictionary<string, MethodInfo>();
@@ -20,14 +20,15 @@ namespace RythmGame
 
         #region initialization
         //need to replace this with an initializer somehow
-        protected ISkill()
+        protected virtual void Awake()
         {
-            //InitializeISkill();
+            
         }
         public async Task InitializeISkill()
         {
             Debug.Log("Initialization started");
 
+            
             await InitializeDecoratorList();
 
             MethodInfo[] methods = this.GetType().GetMethods
@@ -42,24 +43,19 @@ namespace RythmGame
         private async Task InitializeDecoratorList()
         {
             List<string> decoratorList = new List<string>();
-            AsyncOperationHandle<SkillScriptable> loadHandle = Addressables.LoadAssetAsync<SkillScriptable>("Scriptables/SkillList");
-            await loadHandle.Task;
 
-            if (loadHandle.IsDone && loadHandle.Status == AsyncOperationStatus.Succeeded)
+            SkillScriptable skillScriptable = await SkillManager.Instance.GetSkillScriptable();
+            _decoratorList = skillScriptable.GetDecoratorNameList();
+            foreach (string decorator in _decoratorList)
             {
-                Debug.Log($"addressable {loadHandle.Result.name} loaded successfully");
-                SkillScriptable skillScriptable = loadHandle.Result;
-                _decoratorList = skillScriptable.GetDecoratorNameList();
-                foreach(string decorator in _decoratorList)
-                {
-                    Debug.Log($"Decorator is {decorator}");
-                }
+                Debug.Log($"Decorator is {decorator}");
             }
-            else
-            {
-                // Asset failed to load
-                Debug.LogError($"Failed to load asset: {loadHandle.OperationException.Message}");
-            }
+        }
+
+        private async Task GetSkillInfo()
+        {
+            SkillScriptable skillScriptable = await SkillManager.Instance.GetSkillScriptable();
+            _skillInfo = skillScriptable.GetSkillWithName(_name);
         }
 
         protected Dictionary<string, MethodInfo> CreateMethodDictionary(MethodInfo[] methods, List<string> decoratorList)
@@ -126,7 +122,7 @@ namespace RythmGame
         #endregion
 
         #region Cast methods
-        public async virtual Task Cast(string[] activeDecorators = null)
+        public async virtual Task Cast(string side, string[] activeDecorators = null)
         {
             Debug.Log($"Initialization state of skill is : {_isInitialized}");
             if (!_isInitialized)

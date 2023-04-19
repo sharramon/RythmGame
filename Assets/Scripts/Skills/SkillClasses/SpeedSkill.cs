@@ -14,8 +14,9 @@ namespace RythmGame
     {
         public override string _name { get { return "Speed"; } }
 
-        public SpeedSkill() : base()
+        protected override void Awake()
         {
+            base.Awake();
             Type declaringType = this.GetType();
             Debug.Log($"This is class {declaringType.Name}");
         }
@@ -25,9 +26,9 @@ namespace RythmGame
             Debug.Log("Powered Up");
         }
 
-        public async override Task Cast(string[] activeDecorators)
+        public async override Task Cast(string side, string[] activeDecorators)
         {
-            await base.Cast(activeDecorators);
+            await base.Cast(side, activeDecorators);
             Debug.Log("Speed skill cast");
         }
     }
