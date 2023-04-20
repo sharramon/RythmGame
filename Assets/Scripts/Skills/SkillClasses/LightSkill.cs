@@ -30,11 +30,9 @@ namespace RythmGame
         public async override Task Cast(string side, string[] activeDecorators)
         {
             await base.Cast(side, activeDecorators);
-            Debug.Log("Light skill cast");
-            Debug.Log($"Prefab name is");
-            Debug.Log($"{_skillInfo.GetGameObject().name}");
             GameObject _prefab = _skillInfo.GetGameObject();
-            if(side == "left")
+            Debug.Log($"{_skillInfo.GetGameObject()}");
+            if (side == "left")
             {
                 Instantiate(_prefab, SkillManager.Instance._leftWandTip); 
             }

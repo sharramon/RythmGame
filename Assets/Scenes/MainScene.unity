@@ -3190,11 +3190,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTestingWindow: 0
-  _skillScriptable: {fileID: 11400000, guid: f7ade8ad1a46cb348bcd0b0cd7a23418, type: 2}
   _maxRuneNumber: 10
   _decoratorSkillNumber: 1
-  _leftWantTip: {fileID: 445422140}
-  _rightWantTip: {fileID: 230259045}
+  _leftWandTip: {fileID: 445422140}
+  _rightWandTip: {fileID: 230259045}
   _runesOnRight: 
   _runesOnLeft: 
   _skillOnRight: 

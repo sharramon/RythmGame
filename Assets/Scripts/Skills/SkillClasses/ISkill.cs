@@ -27,8 +27,7 @@ namespace RythmGame
         public async Task InitializeISkill()
         {
             Debug.Log("Initialization started");
-
-            
+            await GetSkillInfo();
             await InitializeDecoratorList();
 
             MethodInfo[] methods = this.GetType().GetMethods
