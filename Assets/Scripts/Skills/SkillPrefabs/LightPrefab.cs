@@ -1,17 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace RythmGame
 {
     public class LightPrefab : MonoBehaviour
     {
-        public float _startupTime;
-        public float _windDownTime;
-        public float _skillDuration;
-        public float _easingFactor;
+        [Header("Light fade in/out")]
+        [SerializeField] private float _startupTime;
+        [SerializeField] private float _windDownTime;
+        [SerializeField] private float _skillDuration;
+        [SerializeField] private float _easingFactor;
+
+        [Header("Lighting Objects")]
+        [SerializeField] private float _detectRadius;
+        [SerializeField] private LayerMask _layerMask;
+        [SerializeField] private ParticleSystem _embers;
 
         private float _remainingDuration;
+        private string _name;
+        private string _side;
 
         Material _material;
 
@@ -19,78 +28,109 @@ namespace RythmGame
         {
             Renderer renderer = GetComponent<Renderer>();
             _material = renderer.material;
-            StartCoroutine(LightTimer());
+            StartCoroutine(FadeIn(_startupTime, _easingFactor));
         }
 
-        private IEnumerator LightTimer()
+        private void Update()
         {
-            // Increase alpha from 0 to 1 over startupTime seconds
-            float elapsedTime = 0f;
-            while (elapsedTime < _startupTime)
+            Collider[] colliders = Physics.OverlapSphere(transform.position, _detectRadius, _layerMask);
+            foreach (Collider collider in colliders)
             {
-                float alpha = EaseInOut(elapsedTime / _startupTime);
+                Debug.Log("Collider found: " + collider.gameObject.name);
+            }
+        }
+
+        public void SetPrefab(string name, string side)
+        {
+            _name = name;
+            _side = side;
+        }
+
+        private IEnumerator FadeIn(float duration, float easingFactor)
+        {
+            float elapsedTime = 0f;
+            Color cachedColor = _material.color;
+            while (elapsedTime < duration)
+            {
+                float alpha = Utilities.EaseInOut(elapsedTime / duration, easingFactor);
                 alpha = Mathf.Clamp01(alpha);
-                _material.color = new Color(_material.color.r, _material.color.g, _material.color.b, alpha);
+                cachedColor.a = alpha;
+                _material.color = cachedColor;
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
 
-            // Keep alpha at 1 for skillDuration seconds, but allow it to be extended
-            _remainingDuration = _skillDuration;
+            StartCoroutine(KeepAlpha(_skillDuration));
+        }
+
+        private IEnumerator KeepAlpha(float duration)
+        {
+            _remainingDuration = duration;
+            Color cachedColor = _material.color;
+            float alpha = 1f;
+            cachedColor.a = alpha;
+            _material.color = cachedColor;
             while (_remainingDuration > 0f)
             {
-                float alpha = 1f;
-                _material.color = new Color(_material.color.r, _material.color.g, _material.color.b, alpha);
-
-                // Update the remaining duration and wait for the next frame
                 _remainingDuration -= Time.deltaTime;
                 yield return null;
             }
 
+            StartCoroutine(FadeOut(_windDownTime, _easingFactor));
+        }
 
-            // Decrease alpha from 1 to 0 over skillDuration seconds
-            elapsedTime = 0f;
-            while (elapsedTime < _windDownTime)
+        private IEnumerator FadeOut(float duration, float easingFactor)
+        {
+            float elapsedTime = 0f;
+            float alpha;
+            Color cachedColor = _material.color;
+            while (elapsedTime < duration)
             {
-                float alpha = EaseInOut(1f - (elapsedTime / _windDownTime));
-                alpha = Mathf.Clamp01(alpha);
-                _material.color = new Color(_material.color.r, _material.color.g, _material.color.b, alpha);
-                elapsedTime += Time.deltaTime;
-
-                // Check if we need to ramp back up to 1 alpha and keep it there for a new duration
-                while (_remainingDuration > 0f)
+                if(_remainingDuration <= 0)
                 {
-                    // Increase alpha from current value to 1 over the remaining windDownTime
-                    float remainingWindDownTime = _windDownTime - elapsedTime;
-                    while (elapsedTime < _windDownTime && _remainingDuration > 0f)
-                    {
-                        alpha = EaseInOut((elapsedTime - _windDownTime) / remainingWindDownTime + 1f);
-                        alpha = Mathf.Clamp01(alpha);
-                        _material.color = new Color(_material.color.r, _material.color.g, _material.color.b, alpha);
-                        elapsedTime += Time.deltaTime;
-
-                        yield return null;
-                    }
+                    alpha = Utilities.EaseInOut(1f - (elapsedTime / duration), easingFactor);
                 }
+                else
+                {
+                    alpha = Utilities.EaseInOut(elapsedTime / duration, easingFactor);
+                }
+                alpha = Mathf.Clamp01(alpha);
+                cachedColor.a = alpha;
+                _material.color = cachedColor;
+                elapsedTime += Time.deltaTime;
 
                 yield return null;
             }
 
-            // Set alpha to 0
+            if(_remainingDuration > 0)
+            {
+                StartCoroutine(KeepAlpha(_skillDuration));
+            }
+            else
+            {
+                DestroyPrefab();
+            }
+        }
+
+        public void ResetDuration()
+        {
+            _remainingDuration = _skillDuration;
+        }
+
+        private void DestroyPrefab()
+        {
             _material.color = new Color(_material.color.r, _material.color.g, _material.color.b, 0f);
-
+            if(_side == "right")
+            {
+                if (SkillManager.Instance._activeSkillsOnRight.ContainsKey(_name))
+                    SkillManager.Instance._activeSkillsOnRight.Remove(_name);
+            }
+            else
+            {
+                if (SkillManager.Instance._activeSkillsOnLeft.ContainsKey(_name))
+                    SkillManager.Instance._activeSkillsOnLeft.Remove(_name);
+            }
             Destroy(this.gameObject);
-        }
-
-        public void SetRemainingDuration(float newDuration)
-        {
-            _remainingDuration = newDuration;
-        }
-
-        private float EaseInOut(float t)
-        {
-            // Apply ease-in-out function to t
-            return (3f - 2f * Mathf.Pow(1f - t, _easingFactor)) * t * t;
         }
     }
 }

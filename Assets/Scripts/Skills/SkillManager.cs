@@ -41,6 +41,10 @@ namespace RythmGame
         [HideInInspector] public string _skillOnRight;
         [HideInInspector] public string _skillOnLeft;
 
+        //active skills on each hand
+        public Dictionary<string, GameObject> _activeSkillsOnRight = new Dictionary<string, GameObject>();
+        public Dictionary<string, GameObject> _activeSkillsOnLeft = new Dictionary<string, GameObject>();
+
         //decorators that are saved on each hand
         [HideInInspector] public string[] _decoratorOnRight;
         [HideInInspector] public string[] _decoratorOnLeft;
@@ -129,7 +133,7 @@ namespace RythmGame
             CastSkill(_skillOnRight, "right", _decoratorOnRight);
         }
         /// <summary> casts skill </summary>
-        private void CastSkill(string skillName, string side, string[] decorators = null)
+        public void CastSkill(string skillName, string side, string[] decorators = null)
         {
             SkillFactory.CastSkill(skillName, side, decorators);
         }

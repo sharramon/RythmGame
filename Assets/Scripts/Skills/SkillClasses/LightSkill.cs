@@ -34,13 +34,33 @@ namespace RythmGame
             Debug.Log($"{_skillInfo.GetGameObject()}");
             if (side == "left")
             {
-                Instantiate(_prefab, SkillManager.Instance._leftWandTip); 
+                if (!SkillManager.Instance._activeSkillsOnLeft.ContainsKey(_name))
+                {
+                    GameObject lightPrefab = Instantiate(_prefab, SkillManager.Instance._leftWandTip);
+                    lightPrefab.GetComponent<LightPrefab>().SetPrefab(_name, side);
+                    SkillManager.Instance._activeSkillsOnLeft.Add(_name, lightPrefab);
+                }
+                else
+                {
+                    GameObject lightPrefab = SkillManager.Instance._activeSkillsOnLeft[_name];
+                    lightPrefab.GetComponent<LightPrefab>().ResetDuration();
+                }
             }
             else
             {
-                Instantiate(_prefab, SkillManager.Instance._rightWandTip);
+                if (!SkillManager.Instance._activeSkillsOnRight.ContainsKey(_name))
+                {
+                    Debug.Log("Cast light skill on right");
+                    GameObject lightPrefab = Instantiate(_prefab, SkillManager.Instance._rightWandTip);
+                    lightPrefab.GetComponent<LightPrefab>().SetPrefab(_name, side);
+                    SkillManager.Instance._activeSkillsOnRight.Add(_name, lightPrefab);
+                }
+                else
+                {
+                    GameObject lightPrefab = SkillManager.Instance._activeSkillsOnRight[_name];
+                    lightPrefab.GetComponent<LightPrefab>().ResetDuration();
+                }
             }
         }
-
     }
 }

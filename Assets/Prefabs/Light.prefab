@@ -98,10 +98,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d40d9c91529f82743a5fa0915a0d62a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startupTime: 2
-  _windDownTime: 2
-  _skillDuration: 3
+  _startupTime: 1
+  _windDownTime: 1
+  _skillDuration: 100
   _easingFactor: 2
+  _detectRadius: 1
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _embers: {fileID: 4271952242653926105}
 --- !u!1 &4146150140115610805
 GameObject:
   m_ObjectHideFlags: 0

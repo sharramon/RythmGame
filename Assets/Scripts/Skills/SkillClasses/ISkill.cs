@@ -123,11 +123,9 @@ namespace RythmGame
         #region Cast methods
         public async virtual Task Cast(string side, string[] activeDecorators = null)
         {
-            Debug.Log($"Initialization state of skill is : {_isInitialized}");
             if (!_isInitialized)
                 await InitializeISkill();
 
-            Debug.Log($"active decorator state is {activeDecorators == null} for null, with length {activeDecorators.Length}");
             if (activeDecorators != null && activeDecorators.Length > 0)
                 AddDecorators(activeDecorators);
         }
