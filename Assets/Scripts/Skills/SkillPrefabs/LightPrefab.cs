@@ -33,11 +33,7 @@ namespace RythmGame
 
         private void Update()
         {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, _detectRadius, _layerMask);
-            foreach (Collider collider in colliders)
-            {
-                Debug.Log("Collider found: " + collider.gameObject.name);
-            }
+            GetClosestCollider();
         }
 
         public void SetPrefab(string name, string side)
@@ -131,6 +127,18 @@ namespace RythmGame
                     SkillManager.Instance._activeSkillsOnLeft.Remove(_name);
             }
             Destroy(this.gameObject);
+        }
+
+        private void GetClosestCollider()
+        {
+            Collider[] colliders = new Collider[1];
+            int numColliders = Physics.OverlapSphereNonAlloc(transform.position, _detectRadius, colliders, _layerMask);
+
+            if (numColliders > 0)
+            {
+                Collider closestCollider = colliders[0];
+                // Do something with the closest collider...
+            }
         }
     }
 }

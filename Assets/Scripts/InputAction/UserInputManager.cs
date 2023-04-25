@@ -66,7 +66,10 @@ namespace RythmGame
         {
             Vector2 thumbstickInput = context.ReadValue<Vector2>();
             Transform controllerTransform = _moveController.transform;
-            Vector3 movementDirection = new Vector3(controllerTransform.forward.x * thumbstickInput.x, 0f, controllerTransform.forward.z * thumbstickInput.y).normalized;
+            Vector3 forwardDirection = new Vector3(controllerTransform.forward.x, 0, controllerTransform.forward.z).normalized;
+            Vector3 rightDirection = new Vector3(controllerTransform.right.x, 0, controllerTransform.right.z).normalized;
+            Vector3 movementDirection = (forwardDirection * thumbstickInput.y + rightDirection * thumbstickInput.x).normalized;
+            //Vector3 movementDirection = new Vector3(controllerTransform.forward.x * thumbstickInput.y, 0f, controllerTransform.forward.z * thumbstickInput.x).normalized;
             if (_moveSpeed <= 0)
                 _moveSpeed = 5f;
             Vector3 movementVelocity = movementDirection * _moveSpeed;

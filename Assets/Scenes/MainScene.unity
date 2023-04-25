@@ -3221,7 +3221,7 @@ MonoBehaviour:
   _rightActionController: {fileID: 274930848}
   _leftActionController: {fileID: 1248709371}
   _playerTransform: {fileID: 1580776087}
-  _moveSpeed: 5
+  _moveSpeed: 2
 --- !u!1 &609708770
 GameObject:
   m_ObjectHideFlags: 0
