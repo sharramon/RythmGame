@@ -8,6 +8,7 @@ namespace RythmGame
     public class LightPrefab : MonoBehaviour
     {
         [Header("Light fade in/out")]
+        [SerializeField] private GameObject _lightOrb; 
         [SerializeField] private float _startupTime;
         [SerializeField] private float _windDownTime;
         [SerializeField] private float _skillDuration;
@@ -17,7 +18,12 @@ namespace RythmGame
         [SerializeField] private float _detectRadius;
         [SerializeField] private LayerMask _layerMask;
         [SerializeField] private ParticleSystem _embers;
+        [SerializeField] private float _particleSpeed;
 
+        private ParticleSystem.Particle[] particles;
+        private int numParticlesAlive;
+
+        private Transform _parentTransform;
         private float _remainingDuration;
         private string _name;
         private string _side;
@@ -26,20 +32,23 @@ namespace RythmGame
 
         private void Start()
         {
-            Renderer renderer = GetComponent<Renderer>();
+            Renderer renderer = _lightOrb.GetComponent<Renderer>();
             _material = renderer.material;
+            particles = new ParticleSystem.Particle[_embers.main.maxParticles];
             StartCoroutine(FadeIn(_startupTime, _easingFactor));
         }
 
         private void Update()
         {
+            KeepOnParent();
             GetClosestCollider();
         }
 
-        public void SetPrefab(string name, string side)
+        public void SetPrefab(string name, string side, Transform parentTransform)
         {
             _name = name;
             _side = side;
+            _parentTransform = parentTransform;
         }
 
         private IEnumerator FadeIn(float duration, float easingFactor)
@@ -129,15 +138,43 @@ namespace RythmGame
             Destroy(this.gameObject);
         }
 
+        public void SetParentTransform()
+        {
+
+        }
+
+        private void KeepOnParent()
+        {
+            if (_parentTransform == null)
+                return;
+
+            transform.position = _parentTransform.position;
+        }
+
         private void GetClosestCollider()
         {
             Collider[] colliders = new Collider[1];
             int numColliders = Physics.OverlapSphereNonAlloc(transform.position, _detectRadius, colliders, _layerMask);
 
+            numParticlesAlive = _embers.GetParticles(particles);
+
             if (numColliders > 0)
             {
                 Collider closestCollider = colliders[0];
-                // Do something with the closest collider...
+
+                // Find the closest point on the collider to the particle system
+                //Vector3 localPoint = transform.InverseTransformPoint(closestCollider.transform.position);
+                Vector3 targetTransform = transform.InverseTransformPoint(closestCollider.transform.position);
+
+                // Move each particle towards the closest point on the collider
+                for (int i = 0; i < numParticlesAlive; i++)
+                {
+                    particles[i].position = Vector3.MoveTowards(particles[i].position, targetTransform, 0.01f);
+                    //Debug.Log(closestCollider.transform.position);
+                }
+
+                // Set the modified particles back to the system
+                _embers.SetParticles(particles, numParticlesAlive);
             }
         }
     }
