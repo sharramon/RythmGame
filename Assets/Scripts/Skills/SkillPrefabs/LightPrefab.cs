@@ -19,6 +19,7 @@ namespace RythmGame
         [SerializeField] private LayerMask _layerMask;
         [SerializeField] private ParticleSystem _embers;
         [SerializeField] private float _particleSpeed;
+        private GameObject _currentlySelectedLamp;
 
         private ParticleSystem.Particle[] particles;
         private int numParticlesAlive;
@@ -41,7 +42,7 @@ namespace RythmGame
         private void Update()
         {
             KeepOnParent();
-            GetClosestCollider();
+            showClosestLamp();
         }
 
         public void SetPrefab(string name, string side, Transform parentTransform)
@@ -151,31 +152,97 @@ namespace RythmGame
             transform.position = _parentTransform.position;
         }
 
-        private void GetClosestCollider()
+        private void showClosestLamp()
         {
-            Collider[] colliders = new Collider[1];
-            int numColliders = Physics.OverlapSphereNonAlloc(transform.position, _detectRadius, colliders, _layerMask);
+            Collider[] colliders = Physics.OverlapSphere(transform.position, _detectRadius, _layerMask);
+            int numColliders = colliders.Length;
+
+            if (numColliders == 0)
+            {
+                if(_currentlySelectedLamp != null)
+                {
+                    _currentlySelectedLamp.GetComponent<Lamp>().DeselectLamp();
+                    _currentlySelectedLamp = null;
+                }
+                return;
+            }
+
+            List<Collider> lampColliders = new List<Collider>();
+
+            for (int i = 0; i < numColliders; i++)
+            {
+                if (colliders[i].tag == "Lamp")
+                {
+                    lampColliders.Add(colliders[i]);
+                }
+            }
+
+            if (lampColliders.Count == 0)
+            {
+                if (_currentlySelectedLamp != null)
+                {
+                    _currentlySelectedLamp.GetComponent<Lamp>().DeselectLamp();
+                    _currentlySelectedLamp = null;
+                }
+                return;
+            }
+
+            numColliders = lampColliders.Count;
 
             numParticlesAlive = _embers.GetParticles(particles);
 
             if (numColliders > 0)
             {
-                Collider closestCollider = colliders[0];
+                Collider closestCollider;
+
+                if (numColliders < 1)
+                    closestCollider = lampColliders[0];
+                else
+                    closestCollider = FindClosestLamp(lampColliders);
+
+                if (_currentlySelectedLamp == null || _currentlySelectedLamp != closestCollider.gameObject)
+                    ChangeSelectedLamp(closestCollider.gameObject);
+
 
                 // Find the closest point on the collider to the particle system
-                //Vector3 localPoint = transform.InverseTransformPoint(closestCollider.transform.position);
                 Vector3 targetTransform = transform.InverseTransformPoint(closestCollider.transform.position);
 
                 // Move each particle towards the closest point on the collider
                 for (int i = 0; i < numParticlesAlive; i++)
                 {
                     particles[i].position = Vector3.MoveTowards(particles[i].position, targetTransform, 0.01f);
-                    //Debug.Log(closestCollider.transform.position);
                 }
 
                 // Set the modified particles back to the system
                 _embers.SetParticles(particles, numParticlesAlive);
             }
+        }
+
+        private Collider FindClosestLamp(List<Collider> colliders)
+        {
+            float closestDistance = -1f;
+            Collider closestCollider = null;
+
+            for(int i = 0; i < colliders.Count; i++)
+            {
+                float distance = Vector3.Distance(colliders[i].transform.position, this.transform.position);
+                if(closestDistance < 0 || closestDistance > distance)
+                {
+                    closestCollider = colliders[i];
+                    closestDistance = distance;
+                }
+            }
+
+            return closestCollider;
+        }
+
+        private void ChangeSelectedLamp(GameObject closestLamp)
+        {
+            closestLamp.GetComponent<Lamp>().SelectLamp();
+            if(_currentlySelectedLamp != null)
+                _currentlySelectedLamp.GetComponent<Lamp>().DeselectLamp();
+
+            _currentlySelectedLamp = closestLamp;
         }
     }
 }

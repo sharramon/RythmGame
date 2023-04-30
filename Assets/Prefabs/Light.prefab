@@ -52,7 +52,7 @@ MonoBehaviour:
   _windDownTime: 1
   _skillDuration: 1000
   _easingFactor: 2
-  _detectRadius: 1
+  _detectRadius: 2
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
