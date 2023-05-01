@@ -9,7 +9,7 @@ namespace RythmGame
 {
     public class UserInputManager : Singleton<UserInputManager>
     {
-        ControlHandedness _controlHandedness = ControlHandedness.right;
+        public ControlHandedness _controlHandedness = ControlHandedness.right;
         [SerializeField] private ManualActionController _rightActionController;
         [SerializeField] private ManualActionController _leftActionController;
         [SerializeField] private Transform _playerTransform;

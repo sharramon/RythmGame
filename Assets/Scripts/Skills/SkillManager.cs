@@ -81,7 +81,7 @@ namespace RythmGame
             if(!_isSkillTested)
             {
                 _isSkillTested = true;
-                SkillFactoryTest();
+                //SkillFactoryTest();
             }
         }
 

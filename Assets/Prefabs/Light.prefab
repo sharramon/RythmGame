@@ -50,7 +50,7 @@ MonoBehaviour:
   _lightOrb: {fileID: 6156093620859061424}
   _startupTime: 1
   _windDownTime: 1
-  _skillDuration: 1000
+  _skillDuration: 10
   _easingFactor: 2
   _detectRadius: 2
   _layerMask:

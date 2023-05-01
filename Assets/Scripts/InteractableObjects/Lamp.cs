@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Lamp : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class Lamp : MonoBehaviour
     [SerializeField] private float m_easingFactor;
     [SerializeField] private GameObject m_particles;
 
+    public UnityEvent _lampIsLit;
+
     private Material m_material;
     private bool m_isOn = false;
     private bool m_isChosen = false;
@@ -17,6 +20,7 @@ public class Lamp : MonoBehaviour
 
     private void Start()
     {
+
         Renderer renderer = m_lightOrb.GetComponent<Renderer>();
         m_material = renderer.material;
     }
@@ -82,6 +86,7 @@ public class Lamp : MonoBehaviour
     {
         m_isOn = true;
         m_particles.SetActive(true);
+        _lampIsLit.Invoke();
     }
 
     public void SelectLamp()

@@ -8,6 +8,7 @@ namespace RythmGame
     public class Rune : MonoBehaviour
     {
         [SerializeField] private int _runeID;
+        [SerializeField] ParticleSystem m_particle;
         private SkillManager _skillManager;
 
         private void OnTriggerEnter(Collider other)
@@ -33,11 +34,13 @@ namespace RythmGame
                 {
                     Debug.Log($"right, {_runeID}");
                     _skillManager.UpdateRunes("right", _runeID);
+                    m_particle.Play();
                 }
                 else if(other.name.Contains("left", StringComparison.InvariantCultureIgnoreCase))
                 {
                     Debug.Log($"left, {_runeID}");
                     _skillManager.UpdateRunes("left", _runeID);
+                    m_particle.Play();
                 }
                 else
                 {
