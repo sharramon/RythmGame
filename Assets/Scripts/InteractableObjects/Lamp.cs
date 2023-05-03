@@ -82,6 +82,11 @@ public class Lamp : MonoBehaviour
         }
     }
 
+    public ParticleSystem GetLampEmbers()
+    {
+        return m_particles.GetComponent<ParticleSystem>();
+    }
+
     private void TurnOn()
     {
         m_isOn = true;

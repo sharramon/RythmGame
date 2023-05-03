@@ -81,7 +81,7 @@ namespace RythmGame
             if(!_isSkillTested)
             {
                 _isSkillTested = true;
-                //SkillFactoryTest();
+                SkillFactoryTest();
             }
         }
 
@@ -111,7 +111,7 @@ namespace RythmGame
                 //CastSkill(key);
             }
 
-            string rightSKill = "Light";
+            string rightSKill = "Dark";
             string[] rightDecorator = { "Multiply" };
 
             string leftSkill = "Speed";

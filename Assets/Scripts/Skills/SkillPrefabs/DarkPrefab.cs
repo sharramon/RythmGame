@@ -5,19 +5,16 @@ using UnityEngine;
 
 namespace RythmGame
 {
-    public class LightPrefab : MonoBehaviour
+    public class DarkPrefab : MonoBehaviour
     {
         [Header("Light fade in/out")]
-        [SerializeField] private GameObject _lightOrb; 
-        [SerializeField] private float _startupTime;
-        [SerializeField] private float _windDownTime;
+        [SerializeField] private ParticleSystem _darkClouds;
         [SerializeField] private float _skillDuration;
-        [SerializeField] private float _easingFactor;
 
-        [Header("Lighting Objects")]
+        [Header("Darkening Objects")]
         [SerializeField] private float _detectRadius;
         [SerializeField] private LayerMask _layerMask;
-        [SerializeField] private ParticleSystem _embers;
+        private ParticleSystem _embers;
         private GameObject _currentlySelectedLamp;
 
         private ParticleSystem.Particle[] particles;
@@ -28,80 +25,60 @@ namespace RythmGame
         private string _name;
         private string _side;
 
-        Material _material;
-
         private void Start()
         {
-            Renderer renderer = _lightOrb.GetComponent<Renderer>();
-            _material = renderer.material;
-            particles = new ParticleSystem.Particle[_embers.main.maxParticles];
-            StartCoroutine(FadeIn(_startupTime, _easingFactor));
+            StartCoroutine(FadeIn());
         }
 
         private void Update()
         {
             KeepOnParent();
-            showClosestLamp();
+            //showClosestLamp();
         }
 
         public void SetPrefab(string name, string side, Transform parentTransform)
         {
+            Debug.Log($"setting {name} on {side}");
             _name = name;
             _side = side;
             _parentTransform = parentTransform;
         }
 
-        private IEnumerator FadeIn(float duration, float easingFactor)
+        private IEnumerator FadeIn()
         {
-            float elapsedTime = 0f;
-            Color cachedColor = _material.color;
-            while (elapsedTime < duration)
-            {
-                float alpha = Utilities.EaseInOut(elapsedTime / duration, easingFactor);
-                alpha = Mathf.Clamp01(alpha);
-                cachedColor.a = alpha;
-                _material.color = cachedColor;
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
-
             StartCoroutine(KeepAlpha(_skillDuration));
+            yield return null;
         }
 
         private IEnumerator KeepAlpha(float duration)
         {
             _remainingDuration = duration;
-            Color cachedColor = _material.color;
-            float alpha = 1f;
-            cachedColor.a = alpha;
-            _material.color = cachedColor;
+
             while (_remainingDuration > 0f)
             {
                 _remainingDuration -= Time.deltaTime;
                 yield return null;
             }
 
-            StartCoroutine(FadeOut(_windDownTime, _easingFactor));
+            StartCoroutine(FadeOut());
         }
 
-        private IEnumerator FadeOut(float duration, float easingFactor)
+        private IEnumerator FadeOut()
         {
+            _darkClouds.Stop();
+
+            var main = _darkClouds.main;
+            main.loop = false;
+            float maxLifetime = (main.duration + main.startLifetime.constantMax) * (1/main.simulationSpeed);
+
             float elapsedTime = 0f;
-            float alpha;
-            Color cachedColor = _material.color;
-            while (elapsedTime < duration)
+            while (elapsedTime < maxLifetime)
             {
-                if(_remainingDuration <= 0)
+                if(_remainingDuration > 0)
                 {
-                    alpha = Utilities.EaseInOut(1f - (elapsedTime / duration), easingFactor);
+                    _darkClouds.Play();
+                    break;
                 }
-                else
-                {
-                    alpha = Utilities.EaseInOut(elapsedTime / duration, easingFactor);
-                }
-                alpha = Mathf.Clamp01(alpha);
-                cachedColor.a = alpha;
-                _material.color = cachedColor;
                 elapsedTime += Time.deltaTime;
 
                 yield return null;
@@ -124,7 +101,6 @@ namespace RythmGame
 
         private void DestroyPrefab()
         {
-            _material.color = new Color(_material.color.r, _material.color.g, _material.color.b, 0f);
             if(_side == "right")
             {
                 if (SkillManager.Instance._activeSkillsOnRight.ContainsKey(_name))
@@ -202,7 +178,7 @@ namespace RythmGame
                 if (_currentlySelectedLamp == null || _currentlySelectedLamp != closestCollider.gameObject)
                     ChangeSelectedLamp(closestCollider.gameObject);
 
-
+                //TODO : Have to flip this script so that the lamp give particles to the dark prefab and then dies
                 // Find the closest point on the collider to the particle system
                 Vector3 targetTransform = transform.InverseTransformPoint(closestCollider.transform.position);
 
