@@ -57,7 +57,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _embers: {fileID: 4271952242653926105}
-  _particleSpeed: 0.03
 --- !u!1 &4146150140115610805
 GameObject:
   m_ObjectHideFlags: 0
@@ -4799,7 +4798,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 776677ab3818fb249adaca05f4e04545, type: 2}
+  - {fileID: 2100000, guid: 5667b300dca0fd144b682a14445f4310, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

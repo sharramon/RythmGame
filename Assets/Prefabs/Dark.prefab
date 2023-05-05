@@ -47,11 +47,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _darkClouds: {fileID: 4550311139093054647}
-  _skillDuration: 3
-  _detectRadius: 2
+  _skillDuration: 1000
+  _detectRadius: 1
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
+  _embers: {fileID: 2078396638120941867}
 --- !u!1 &2167606637521823559
 GameObject:
   m_ObjectHideFlags: 0
@@ -4793,7 +4794,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 776677ab3818fb249adaca05f4e04545, type: 2}
+  - {fileID: 2100000, guid: c8f85a7384c14844db0a57f6137a2b93, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

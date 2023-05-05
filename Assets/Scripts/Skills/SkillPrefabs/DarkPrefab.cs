@@ -14,8 +14,8 @@ namespace RythmGame
         [Header("Darkening Objects")]
         [SerializeField] private float _detectRadius;
         [SerializeField] private LayerMask _layerMask;
-        private ParticleSystem _embers;
-        private GameObject _currentlySelectedLamp;
+        [SerializeField] private ParticleSystem _embers;
+        [SerializeField] private GameObject _currentlySelectedLamp;
 
         private ParticleSystem.Particle[] particles;
         private int numParticlesAlive;
@@ -27,13 +27,14 @@ namespace RythmGame
 
         private void Start()
         {
+            particles = new ParticleSystem.Particle[_embers.main.maxParticles];
             StartCoroutine(FadeIn());
         }
 
         private void Update()
         {
             KeepOnParent();
-            //showClosestLamp();
+            showClosestLamp();
         }
 
         public void SetPrefab(string name, string side, Transform parentTransform)
@@ -136,7 +137,7 @@ namespace RythmGame
             {
                 if(_currentlySelectedLamp != null)
                 {
-                    _currentlySelectedLamp.GetComponent<Lamp>().DeselectLamp();
+                    _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOff();
                     _currentlySelectedLamp = null;
                 }
                 return;
@@ -156,7 +157,8 @@ namespace RythmGame
             {
                 if (_currentlySelectedLamp != null)
                 {
-                    _currentlySelectedLamp.GetComponent<Lamp>().DeselectLamp();
+                    Debug.Log("Got rid of selected lamp");
+                    _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOff();
                     _currentlySelectedLamp = null;
                 }
                 return;
@@ -213,9 +215,9 @@ namespace RythmGame
 
         private void ChangeSelectedLamp(GameObject closestLamp)
         {
-            closestLamp.GetComponent<Lamp>().SelectLamp();
+            closestLamp.GetComponent<Lamp>().SelectLampOff();
             if(_currentlySelectedLamp != null)
-                _currentlySelectedLamp.GetComponent<Lamp>().DeselectLamp();
+                _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOff();
 
             _currentlySelectedLamp = closestLamp;
         }
