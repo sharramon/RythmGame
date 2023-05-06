@@ -47,12 +47,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _darkClouds: {fileID: 4550311139093054647}
-  _skillDuration: 1000
+  _skillDuration: 10
   _detectRadius: 1
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
   _embers: {fileID: 2078396638120941867}
+  _currentlySelectedLamp: {fileID: 0}
 --- !u!1 &2167606637521823559
 GameObject:
   m_ObjectHideFlags: 0

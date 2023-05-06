@@ -21,10 +21,4 @@ MonoBehaviour:
     _skillPrefab: {fileID: 1143433864746815961, guid: f37f76c8f96b9c44299676e3d252cae3,
       type: 3}
     _skillInput: 030000000200000001000000
-  _decoratorInfoList:
-  - _skillName: PowerUp
-    _skillPrefab: {fileID: 0}
-    _skillInput: 0300000002000000
-  - _skillName: Multiply
-    _skillPrefab: {fileID: 0}
-    _skillInput: 0300000001000000
+  _decoratorInfoList: []

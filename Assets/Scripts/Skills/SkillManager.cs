@@ -81,7 +81,7 @@ namespace RythmGame
             if(!_isSkillTested)
             {
                 _isSkillTested = true;
-                SkillFactoryTest();
+                //SkillFactoryTest();
             }
         }
 
@@ -126,11 +126,15 @@ namespace RythmGame
         public void CastSkillOnLeft()
         {
             CastSkill(_skillOnLeft, "left", _decoratorOnLeft);
+            if (_skillOnLeft != null)
+                _skillOnLeft = null;
         }
         /// <summary> casts the skills depending on the info saved on the right 'wand' </summary>
         public void CastSkillOnRight()
         {
             CastSkill(_skillOnRight, "right", _decoratorOnRight);
+            if (_skillOnRight != null)
+                _skillOnRight = null;
         }
         /// <summary> casts skill </summary>
         public void CastSkill(string skillName, string side, string[] decorators = null)
