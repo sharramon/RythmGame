@@ -18,6 +18,7 @@ namespace RythmGame
         {
             base.Awake();
             Type declaringType = this.GetType();
+            _listOfCollidingSkills.AddRange(new[] { "Dark" });
             Debug.Log($"This is class {declaringType.Name}");
             Debug.Log($"Constructor for {declaringType.Name} called");
         } 

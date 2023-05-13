@@ -30,16 +30,6 @@ public class RhythmKeeper : Singleton<RhythmKeeper>
             PlayBeatAudio();
         }
     }
-    public void StartBeat()
-    {
-        _currentTime = 0;
-        _isStartBeat = true;
-    }
-    public void StopBeat()
-    {
-        _currentTime = 0;
-        _isStartBeat = false;
-    }
     public bool CheckIfInWindow()
     {
         if (!_isStartBeat)
@@ -62,5 +52,15 @@ public class RhythmKeeper : Singleton<RhythmKeeper>
             _isOneBeat = true;
             SoundManager.Instance.PlayAudio(_beatAudioClipTwo);
         }
+    }
+    public void StartBeat()
+    {
+        _currentTime = 0;
+        _isStartBeat = true;
+    }
+    public void StopBeat()
+    {
+        _currentTime = 0;
+        _isStartBeat = false;
     }
 }

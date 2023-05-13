@@ -14,6 +14,7 @@ namespace RythmGame
     {
         protected static List<string> _decoratorList = new List<string>();
         protected Dictionary<string, MethodInfo> _methodDictionary = new Dictionary<string, MethodInfo>();
+        protected List<string> _listOfCollidingSkills = new List<string>();
         public abstract string _name { get; } //name of skill is abstract to make sure inheriting class implements
         protected bool _isInitialized = false;
         protected SkillInfo _skillInfo;
@@ -128,6 +129,8 @@ namespace RythmGame
 
             if (activeDecorators != null && activeDecorators.Length > 0)
                 AddDecorators(activeDecorators);
+
+            KilLCollidingSkills(side);
         }
 
         protected virtual void AddDecorators(string[] activeDecorators)
@@ -145,6 +148,34 @@ namespace RythmGame
                     MethodInfo method = _methodDictionary[activeDecorators[i]];
                     object[] arguments = new object[] { };
                     method.Invoke(this, arguments);
+                }
+            }
+        }
+
+        protected void KilLCollidingSkills(string side)
+        {
+            if (side == "left")
+            {
+                for(int i = 0; i < _listOfCollidingSkills.Count; i++)
+                {
+                    if(SkillManager.Instance._activeSkillsOnRight.ContainsKey(_listOfCollidingSkills[i]))
+                    {
+                        GameObject collidingSKill = SkillManager.Instance._activeSkillsOnLeft[_listOfCollidingSkills[i]];
+                        SkillManager.Instance._activeSkillsOnLeft.Remove(_listOfCollidingSkills[i]);
+                        Destroy(collidingSKill);
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < _listOfCollidingSkills.Count; i++)
+                {
+                    if (SkillManager.Instance._activeSkillsOnRight.ContainsKey(_listOfCollidingSkills[i]))
+                    {
+                        GameObject collidingSKill = SkillManager.Instance._activeSkillsOnRight[_listOfCollidingSkills[i]];
+                        SkillManager.Instance._activeSkillsOnRight.Remove(_listOfCollidingSkills[i]);
+                        Destroy(collidingSKill);
+                    }
                 }
             }
         }

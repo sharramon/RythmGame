@@ -17,6 +17,10 @@ namespace RythmGame
         [SerializeField] int _maxRuneNumber = 10;
         [SerializeField] int _decoratorSkillNumber; //The number of decorators a skill is allowed to have
 
+        [Header("For testing")]
+        [SerializeField] private bool _darkTest = false;
+        [SerializeField] private bool _lightTest = false;
+        
         [Header("Wand Info")]
         public Transform _leftWandTip;
         public Transform _rightWandTip;
@@ -83,6 +87,16 @@ namespace RythmGame
                 _isSkillTested = true;
                 //SkillFactoryTest();
             }
+            if (_lightTest)
+            {
+                _lightTest = false;
+                RightLightTest();
+            }
+            if(_darkTest)
+            {
+                _darkTest = false;
+                RightDarkTest();
+            }
         }
 
         private Dictionary<string, SkillInfo> GetSkillDictionary(List<SkillInfo> skillInfoList)
@@ -96,6 +110,20 @@ namespace RythmGame
             }
 
             return skillDictionary;
+        }
+
+        private void RightDarkTest()
+        {
+            string rightSKill = "Dark";
+            string[] rightDecorator = {};
+            CastSkill(rightSKill, "right", rightDecorator);
+        }
+
+        private void RightLightTest()
+        {
+            string rightSKill = "Light";
+            string[] rightDecorator = { };
+            CastSkill(rightSKill, "right", rightDecorator);
         }
 
         /// <summary> this is just a test method. Comment out or erase later. </summary>
