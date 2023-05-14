@@ -20,8 +20,8 @@ public class Lamp : MonoBehaviour
 
     private Material m_material;
     private bool m_isOn = false;
-    private bool m_isChosenOn = false;
-    private bool m_isChosenOff = false;
+    [SerializeField] private bool m_isChosenOn = false; //is chosen to be on
+    [SerializeField] private bool m_isChosenOff = false; //is chosen to be off
     private bool m_isFade = false;
     private bool m_isBrighten = false;
 
@@ -167,7 +167,7 @@ public class Lamp : MonoBehaviour
             }
         }
 
-        if (m_isChosenOff && m_isChosenOn)  
+        if (m_isChosenOff && !m_isChosenOn)  
         {
             StartCoroutine(OffFadeOut(m_windDownTime, m_easingFactor, 0f));
         }
@@ -231,5 +231,10 @@ public class Lamp : MonoBehaviour
     {
         Debug.Log("Deselect Lamp off entered");
         m_isChosenOff = false;
+    }
+
+    public bool GetOnState()
+    {
+        return m_isOn;
     }
 }

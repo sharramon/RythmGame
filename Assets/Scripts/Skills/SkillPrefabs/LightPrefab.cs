@@ -42,6 +42,7 @@ namespace RythmGame
         {
             KeepOnParent();
             showClosestLamp();
+            FindAllLightableObjects();
         }
 
         public void SetPrefab(string name, string side, Transform parentTransform)
@@ -135,7 +136,16 @@ namespace RythmGame
                 if (SkillManager.Instance._activeSkillsOnLeft.ContainsKey(_name))
                     SkillManager.Instance._activeSkillsOnLeft.Remove(_name);
             }
+
             Destroy(this.gameObject);
+        }
+
+        private void OnDestroy()
+        {
+            if (_currentlySelectedLamp != null)
+            {
+                _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOn();
+            }
         }
 
         public void SetParentTransform()
@@ -242,6 +252,11 @@ namespace RythmGame
                 _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOn();
 
             _currentlySelectedLamp = closestLamp;
+        }
+
+        private void FindAllLightableObjects()
+        {
+
         }
     }
 }

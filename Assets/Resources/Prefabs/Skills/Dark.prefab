@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _darkClouds: {fileID: 4550311139093054647}
-  _skillDuration: 10
+  _skillDuration: 20
   _detectRadius: 1
   _layerMask:
     serializedVersion: 2

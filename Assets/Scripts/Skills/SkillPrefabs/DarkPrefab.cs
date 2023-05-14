@@ -115,6 +115,14 @@ namespace RythmGame
             Destroy(this.gameObject);
         }
 
+        private void OnDestroy()
+        {
+            if (_currentlySelectedLamp != null)
+            {
+                _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOff();
+            }
+        }
+
         public void SetParentTransform()
         {
 
@@ -147,9 +155,10 @@ namespace RythmGame
 
             for (int i = 0; i < numColliders; i++)
             {
-                if (colliders[i].tag == "Lamp")
+                if (colliders[i].tag == "Lamp" && colliders[i].gameObject.GetComponent<Lamp>() != null)
                 {
-                    lampColliders.Add(colliders[i]);
+                    if(colliders[i].gameObject.GetComponent<Lamp>().GetOnState())
+                        lampColliders.Add(colliders[i]);
                 }
             }
 
