@@ -119,7 +119,7 @@ namespace RythmGame
         {
             if (_currentlySelectedLamp != null)
             {
-                _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOff();
+                _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOff(_side);
             }
         }
 
@@ -145,7 +145,7 @@ namespace RythmGame
             {
                 if(_currentlySelectedLamp != null)
                 {
-                    _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOff();
+                    _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOff(_side);
                     _currentlySelectedLamp = null;
                 }
                 return;
@@ -167,7 +167,7 @@ namespace RythmGame
                 if (_currentlySelectedLamp != null)
                 {
                     Debug.Log("Got rid of selected lamp");
-                    _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOff();
+                    _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOff(_side);
                     _currentlySelectedLamp = null;
                 }
                 return;
@@ -224,9 +224,9 @@ namespace RythmGame
 
         private void ChangeSelectedLamp(GameObject closestLamp)
         {
-            closestLamp.GetComponent<Lamp>().SelectLampOff();
+            closestLamp.GetComponent<Lamp>().SelectLampOff(_side);
             if(_currentlySelectedLamp != null)
-                _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOff();
+                _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOff(_side);
 
             _currentlySelectedLamp = closestLamp;
         }

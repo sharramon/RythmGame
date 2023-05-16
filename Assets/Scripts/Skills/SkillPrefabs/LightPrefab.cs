@@ -19,6 +19,9 @@ namespace RythmGame
         [SerializeField] private LayerMask _layerMask;
         [SerializeField] private ParticleSystem _embers;
         private GameObject _currentlySelectedLamp;
+        private HashSet<Flower> m_selectedFlowers = new HashSet<Flower>();
+        private HashSet<Flower> m_foundFlowers = new HashSet<Flower>();
+        private List<Flower> m_flowersToRemove = new List<Flower>();
 
         private ParticleSystem.Particle[] particles;
         private int numParticlesAlive;
@@ -41,8 +44,7 @@ namespace RythmGame
         private void Update()
         {
             KeepOnParent();
-            showClosestLamp();
-            FindAllLightableObjects();
+            GetLightInteractables();
         }
 
         public void SetPrefab(string name, string side, Transform parentTransform)
@@ -144,7 +146,12 @@ namespace RythmGame
         {
             if (_currentlySelectedLamp != null)
             {
-                _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOn();
+                _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOn(_side);
+            }
+
+            foreach (Flower flower in m_selectedFlowers)
+            {
+                flower.CloseFlower();
             }
         }
 
@@ -161,16 +168,23 @@ namespace RythmGame
             transform.position = _parentTransform.position;
         }
 
-        private void showClosestLamp()
+        private void GetLightInteractables()
         {
             Collider[] colliders = Physics.OverlapSphere(transform.position, _detectRadius, _layerMask);
+
+            ShowClosestLamp(colliders);
+            UpdateSelectedFlowers(colliders);
+        }
+
+        private void ShowClosestLamp(Collider[] colliders)
+        {
             int numColliders = colliders.Length;
 
             if (numColliders == 0)
             {
                 if(_currentlySelectedLamp != null)
                 {
-                    _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOn();
+                    _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOn(_side);
                     _currentlySelectedLamp = null;
                 }
                 return;
@@ -190,7 +204,7 @@ namespace RythmGame
             {
                 if (_currentlySelectedLamp != null)
                 {
-                    _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOn();
+                    _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOn(_side);
                     _currentlySelectedLamp = null;
                 }
                 return;
@@ -247,14 +261,68 @@ namespace RythmGame
 
         private void ChangeSelectedLamp(GameObject closestLamp)
         {
-            closestLamp.GetComponent<Lamp>().SelectLampOn();
+            closestLamp.GetComponent<Lamp>().SelectLampOn(_side);
             if(_currentlySelectedLamp != null)
-                _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOn();
+                _currentlySelectedLamp.GetComponent<Lamp>().DeselectLampOn(_side);
 
             _currentlySelectedLamp = closestLamp;
         }
 
-        private void FindAllLightableObjects()
+        private void UpdateSelectedFlowers(Collider[] colliders)
+        {
+            int numColliders = colliders.Length;
+
+            if (numColliders == 0)
+            {
+                foreach(Flower flower in m_selectedFlowers)
+                {
+                    flower.CloseFlower();
+                }
+                return;
+            }
+
+            m_foundFlowers.Clear();
+
+            for (int i = 0; i < numColliders; i++)
+            {
+                if (colliders[i].tag == "Flower" && colliders[i].gameObject.GetComponent<Flower>())
+                {
+                    Flower currentFlower = colliders[i].gameObject.GetComponent<Flower>();
+                    m_foundFlowers.Add(currentFlower);
+                    if (!m_selectedFlowers.Contains(currentFlower))
+                    {
+                        m_selectedFlowers.Add(currentFlower);
+                        currentFlower.OpenFlower();
+                    }
+                }
+            }
+
+            m_flowersToRemove.Clear();
+
+            if(m_foundFlowers.Count != 0)
+            {
+                foreach(Flower flower in m_selectedFlowers)
+                {
+                    if(!m_foundFlowers.Contains(flower))
+                    {
+                        flower.CloseFlower();
+                        m_flowersToRemove.Add(flower);
+                    }
+                }
+
+                foreach(Flower flower in m_flowersToRemove)
+                {
+                    m_selectedFlowers.Remove(flower);
+                }
+            }
+        }
+
+        private void OpenSelectedFlowers()
+        {
+
+        }
+
+        private void CloseDeselectedFlowers()
         {
 
         }

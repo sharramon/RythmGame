@@ -11,6 +11,11 @@ public class Lamp : MonoBehaviour
     [SerializeField] private float m_easingFactor;
     [SerializeField] private GameObject m_particles;
 
+    [Header ("For the flowers")]
+    [SerializeField] private float _detectRadius;
+    [SerializeField] private LayerMask _layerMask;
+    private HashSet<Flower> m_selectedFlowers = new HashSet<Flower>();
+
     [Header ("For testing")]
     [SerializeField] private bool m_isTurnOn = false;
     [SerializeField] private bool m_isTurnOff = false;
@@ -20,15 +25,25 @@ public class Lamp : MonoBehaviour
 
     private Material m_material;
     private bool m_isOn = false;
-    [SerializeField] private bool m_isChosenOn = false; //is chosen to be on
-    [SerializeField] private bool m_isChosenOff = false; //is chosen to be off
+    [SerializeField] private bool m_isChosenOnLeft = false; //is chosen to be on
+    [SerializeField] private bool m_isChosenOnRight = false; //is chosen to be on
+    [SerializeField] private bool m_isChosenOffLeft = false; //is chosen to be off
+    [SerializeField] private bool m_isChosenOffRight = false; //is chosen to be off
     private bool m_isFade = false;
     private bool m_isBrighten = false;
 
+    private void Awake()
+    {
+        _lampIsLit = new UnityEvent();
+        _lampIsOff = new UnityEvent();
+    }
     private void Start()
     {
         Renderer renderer = m_lightOrb.GetComponent<Renderer>();
         m_material = renderer.material;
+
+        _lampIsLit.AddListener(GetLightInteractables);
+        _lampIsOff.AddListener(DeselectFlowers);
     }
 
     private void Update()
@@ -53,7 +68,7 @@ public class Lamp : MonoBehaviour
 
         while (elapsedTime < duration)
         {
-            if(m_isChosenOn)
+            if(m_isChosenOnLeft || m_isChosenOnRight)
             {
                 float alpha = Utilities.EaseInOut(elapsedTime / duration, easingFactor);
                 alpha = Mathf.Clamp01(alpha);
@@ -83,7 +98,7 @@ public class Lamp : MonoBehaviour
         Color cachedColor = m_material.color;
         while (elapsedTime < duration)
         {
-            if (!m_isChosenOn)
+            if (!m_isChosenOnLeft && !m_isChosenOnRight)
             {
                 alpha = Utilities.EaseInOut(1f - (elapsedTime / duration), easingFactor);
                 alpha = Mathf.Clamp01(alpha);
@@ -106,7 +121,7 @@ public class Lamp : MonoBehaviour
     private IEnumerator OffFadeOut(float duration, float easingFactor, float completionRate)
     {
         Debug.Log("Entered off fade out");
-        while(m_isChosenOn && m_isOn == false) //turning on takes precedence
+        while(m_isChosenOnLeft || m_isChosenOffRight && m_isOn == false) //turning on takes precedence
         {
             yield return null;
         }
@@ -117,7 +132,7 @@ public class Lamp : MonoBehaviour
 
         while (elapsedTime < duration)
         {
-            if (m_isChosenOff && !m_isChosenOn)
+            if ((m_isChosenOffLeft || m_isChosenOffRight) && !m_isChosenOnLeft && !m_isChosenOffRight)
             {
                 alpha = Utilities.EaseInOut(1f - (elapsedTime / duration), easingFactor);
                 alpha = Mathf.Clamp01(alpha);
@@ -150,7 +165,7 @@ public class Lamp : MonoBehaviour
 
         while (elapsedTime < duration)
         {
-            if (!m_isChosenOff)
+            if (!m_isChosenOffLeft && !m_isChosenOffRight)
             {
                 float alpha = Utilities.EaseInOut(elapsedTime / duration, easingFactor);
                 alpha = Mathf.Clamp01(alpha);
@@ -167,7 +182,7 @@ public class Lamp : MonoBehaviour
             }
         }
 
-        if (m_isChosenOff && !m_isChosenOn)  
+        if ((m_isChosenOffLeft || m_isChosenOffRight) && !m_isChosenOnLeft && !m_isChosenOffRight)  
         {
             StartCoroutine(OffFadeOut(m_windDownTime, m_easingFactor, 0f));
         }
@@ -201,9 +216,13 @@ public class Lamp : MonoBehaviour
         m_material.color = cachedColor;
     }
 
-    public void SelectLampOn()
+    public void SelectLampOn(string side)
     {
-        m_isChosenOn = true;
+        if (side == "left")
+            m_isChosenOnLeft = true;
+        else
+            m_isChosenOnRight = true;
+
 
         if (!m_isOn)
         {
@@ -212,29 +231,72 @@ public class Lamp : MonoBehaviour
         }
     }
 
-    public void SelectLampOff()
+    public void SelectLampOff(string side)
     {
-        m_isChosenOff = true;
+        if (side == "left")
+            m_isChosenOffLeft = true;
+        else
+            m_isChosenOffRight = true;
 
-        if(m_isOn && !m_isBrighten)
+        if (m_isOn && !m_isBrighten)
         {
             StartCoroutine(OffFadeOut(m_startupTime, m_easingFactor, 0));
         }
     }
 
-    public void DeselectLampOn()
+    public void DeselectLampOn(string side)
     {
-        m_isChosenOn = false;
+        if (side == "left")
+            m_isChosenOnLeft = false;
+        else
+            m_isChosenOnRight = false;
     }
 
-    public void DeselectLampOff()
+    public void DeselectLampOff(string side)
     {
-        Debug.Log("Deselect Lamp off entered");
-        m_isChosenOff = false;
+
+        if (side == "left")
+            m_isChosenOffLeft = false;
+        else
+            m_isChosenOffRight = false;
     }
 
     public bool GetOnState()
     {
         return m_isOn;
+    }
+
+    private void GetLightInteractables()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, _detectRadius, _layerMask);
+        GetFlowers(colliders);
+    }
+
+    private void GetFlowers(Collider[] colliders)
+    {
+        int numColliders = colliders.Length;
+
+        if (numColliders == 0)
+            return;
+
+        for (int i = 0; i < numColliders; i++)
+        {
+            if (colliders[i].tag == "Flower" && colliders[i].gameObject.GetComponent<Flower>())
+            {
+                Flower currentFlower = colliders[i].gameObject.GetComponent<Flower>();
+                m_selectedFlowers.Add(currentFlower);
+                currentFlower.OpenFlower();
+            }
+        }
+    }
+
+    private void DeselectFlowers()
+    {
+        foreach (Flower flower in m_selectedFlowers)
+        {
+            flower.CloseFlower();
+        }
+
+        m_selectedFlowers.Clear();
     }
 }

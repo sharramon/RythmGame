@@ -66,7 +66,7 @@ public class Flower : ILightableObject
             CloseFlower();
     }
 
-    private void OpenFlower()
+    public void OpenFlower()
     {
         if (GetCurrentAnimationName() == "Closed")
             TriggerOpen();
@@ -78,7 +78,7 @@ public class Flower : ILightableObject
         }
     }
 
-    private void CloseFlower()
+    public void CloseFlower()
     {
         if (GetCurrentAnimationName() == "Open")
             TriggerClose();
