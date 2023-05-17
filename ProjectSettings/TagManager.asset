@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Wand
   - Lamp
+  - Flower
   layers:
   - Default
   - TransparentFX

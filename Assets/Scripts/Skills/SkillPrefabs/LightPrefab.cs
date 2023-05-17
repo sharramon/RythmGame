@@ -197,6 +197,7 @@ namespace RythmGame
                 if (colliders[i].tag == "Lamp")
                 {
                     lampColliders.Add(colliders[i]);
+                    Debug.Log($"added lamp object {colliders[i].gameObject.name}");
                 }
             }
 
@@ -214,6 +215,7 @@ namespace RythmGame
 
             numParticlesAlive = _embers.GetParticles(particles);
 
+            Debug.Log($"number of lamp colliers is {numColliders}");
             if (numColliders > 0)
             {
                 Collider closestCollider;
@@ -287,12 +289,14 @@ namespace RythmGame
             {
                 if (colliders[i].tag == "Flower" && colliders[i].gameObject.GetComponent<Flower>())
                 {
+                    Debug.Log($"Got flower {colliders[i].gameObject.name}");
                     Flower currentFlower = colliders[i].gameObject.GetComponent<Flower>();
                     m_foundFlowers.Add(currentFlower);
+                    currentFlower.OpenFlower();
                     if (!m_selectedFlowers.Contains(currentFlower))
                     {
+                        Debug.Log($"Opening flower {currentFlower.gameObject.name}");
                         m_selectedFlowers.Add(currentFlower);
-                        currentFlower.OpenFlower();
                     }
                 }
             }
@@ -305,6 +309,7 @@ namespace RythmGame
                 {
                     if(!m_foundFlowers.Contains(flower))
                     {
+                        Debug.Log($"Closing flower {flower.gameObject.name}");
                         flower.CloseFlower();
                         m_flowersToRemove.Add(flower);
                     }

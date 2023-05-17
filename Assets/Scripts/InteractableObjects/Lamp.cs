@@ -34,8 +34,8 @@ public class Lamp : MonoBehaviour
 
     private void Awake()
     {
-        _lampIsLit = new UnityEvent();
-        _lampIsOff = new UnityEvent();
+        //_lampIsLit = new UnityEvent();
+        //_lampIsOff = new UnityEvent();
     }
     private void Start()
     {
@@ -268,6 +268,7 @@ public class Lamp : MonoBehaviour
 
     private void GetLightInteractables()
     {
+        Debug.Log("Get light interactibles started");
         Collider[] colliders = Physics.OverlapSphere(transform.position, _detectRadius, _layerMask);
         GetFlowers(colliders);
     }

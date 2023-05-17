@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 5350161923799166850}
   - component: {fileID: 5350161923799166877}
   - component: {fileID: -7882638673382443618}
+  - component: {fileID: 197624650830317868}
   m_Layer: 6
   m_Name: WaterLily
-  m_TagString: Untagged
+  m_TagString: Flower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -76,6 +77,19 @@ MonoBehaviour:
   - Closing
   m_openFlower: 0
   m_closeFlower: 0
+--- !u!135 &197624650830317868
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4716473053262837048}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4822011145523524355
 GameObject:
   m_ObjectHideFlags: 0
