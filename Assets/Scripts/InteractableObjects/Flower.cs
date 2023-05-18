@@ -9,6 +9,13 @@ public class Flower : ILightableObject
     [SerializeField] private string m_openTrigger;
     [SerializeField] private string m_closeTrigger;
 
+    private enum FlowerStartState
+    {
+        open = 0,
+        closed =1
+    }
+    [SerializeField] private FlowerStartState m_flowerStartState = 0;
+
     [Header("Animation state names")]
     [SerializeField] private List<string> m_states = new List<string>(); 
 
@@ -21,6 +28,7 @@ public class Flower : ILightableObject
     private void Start()
     {
         m_flowerAnimator = this.GetComponent<Animator>();
+        SetStartState();
     }
 
     private void Update()
@@ -35,6 +43,21 @@ public class Flower : ILightableObject
         {
             m_closeFlower = false;
             CloseFlower();
+        }
+    }
+
+    private void SetStartState()
+    {
+        switch((int)m_flowerStartState)
+        {
+            case 0:
+                m_flowerAnimator.Play("Open");
+                break;
+            case 1:
+                m_flowerAnimator.Play("Closed");
+                break;
+            default:
+                break;
         }
     }
 
