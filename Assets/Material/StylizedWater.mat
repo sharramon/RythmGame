@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: StylizedWater
-  m_Shader: {fileID: -6465566751694194690, guid: 7b2793c45f83d9e4ab9b7c5c45c7308e,
+  m_Shader: {fileID: -6465566751694194690, guid: fd9cd36c78afd38478403f4686edc7d8,
     type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -90,7 +90,6 @@ Material:
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
-    - _Choppiness: 0.01
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -128,7 +127,7 @@ Material:
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _WaterColour: {r: 0.18396226, g: 0.7104015, b: 1, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &7031037210090861605
+--- !u!114 &3376017667717252520
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
